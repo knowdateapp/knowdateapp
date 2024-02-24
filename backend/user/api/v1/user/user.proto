@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package knowdateapp.user.v1.user;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/knowdateapp/knowdateapp/backend/user/internal/pb/api/v1/user";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "User Service"
+    version: "0.0.1"
+  }
+};
+
+service UserService {
+
+  rpc CreateAnonymousUser(CreateAnonymousUserRequest) returns (CreateAnonymousUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/anonymous"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "CreateAnonymousUser"
+    };
+  }
+
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
+
+message CreateAnonymousUserRequest {
+  string username = 1;
+}
+
+message CreateAnonymousUserResponse {
+  User user = 1;
+}

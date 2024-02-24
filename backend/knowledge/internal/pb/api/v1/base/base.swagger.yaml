@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  title: Knowledge Base Service
+  version: 0.0.1
+tags:
+  - name: KnowledgeBaseService
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v1/bases:
+    post:
+      operationId: CreateKnowledgeBase
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/baseCreateKnowledgeBaseResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/baseCreateKnowledgeBaseRequest'
+      tags:
+        - KnowledgeBaseService
+  /api/v1/bases/{id}:
+    get:
+      operationId: GetKnowledgeBaseById
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/baseGetKnowledgeBaseByIdResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - KnowledgeBaseService
+    delete:
+      operationId: DeleteKnowledgeBaseById
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/baseDeleteKnowledgeBaseByIdResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - KnowledgeBaseService
+definitions:
+  baseCreateKnowledgeBaseRequest:
+    type: object
+    properties:
+      owner_id:
+        type: string
+      topic:
+        type: string
+      description:
+        type: string
+  baseCreateKnowledgeBaseResponse:
+    type: object
+    properties:
+      base:
+        $ref: '#/definitions/commonBase'
+  baseDeleteKnowledgeBaseByIdResponse:
+    type: object
+  baseGetKnowledgeBaseByIdResponse:
+    type: object
+    properties:
+      base:
+        $ref: '#/definitions/commonBase'
+  commonBase:
+    type: object
+    properties:
+      id:
+        type: string
+      owner_id:
+        type: string
+      topic:
+        type: string
+      description:
+        type: string
+      collections:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/commonCollection'
+      created_at:
+        type: string
+        format: date-time
+  commonCollection:
+    type: object
+    properties:
+      id:
+        type: string
+      base_id:
+        type: string
+      owner_id:
+        type: string
+      topic:
+        type: string
+      description:
+        type: string
+      page_ids:
+        type: array
+        items:
+          type: string
+      created_at:
+        type: string
+        format: date-time
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
