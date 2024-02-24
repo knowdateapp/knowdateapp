@@ -1,0 +1,65 @@
+swagger: "2.0"
+info:
+  title: api/v1/auth/auth.proto
+  version: version not set
+tags:
+  - name: AuthService
+basePath: /api/v1/
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /login/anonymous:
+    post:
+      operationId: AuthService_LoginAnonymousUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/authLoginAnonymousUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/authLoginAnonymousUserRequest'
+      tags:
+        - AuthService
+definitions:
+  authLoginAnonymousUserRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 'TODO: Make the handler more secure.'
+  authLoginAnonymousUserResponse:
+    type: object
+    properties:
+      token:
+        type: string
+      refreshToken:
+        type: string
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
