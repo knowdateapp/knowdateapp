@@ -8,10 +8,10 @@ option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/intern
 
 message Collection {
   string id = 1;
-  string base_id = 2;
+  string knowledge_base_id = 2;
   string owner_id = 3;
   string topic = 4;
   string description = 5;
-  repeated string page_ids = 6;
+  repeated string topic_ids = 6;
   google.protobuf.Timestamp created_at = 7;
 }

@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: api/v1/base/base.proto
+// source: api/v1/knowledge_base/knowledge_base.proto
 
-package base
+package knowledge_base
 
 import (
 	context "context"
@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	KnowledgeBaseService_CreateKnowledgeBase_FullMethodName     = "/knowdateapp.knowledge.v1.base.KnowledgeBaseService/CreateKnowledgeBase"
-	KnowledgeBaseService_GetKnowledgeBaseById_FullMethodName    = "/knowdateapp.knowledge.v1.base.KnowledgeBaseService/GetKnowledgeBaseById"
-	KnowledgeBaseService_DeleteKnowledgeBaseById_FullMethodName = "/knowdateapp.knowledge.v1.base.KnowledgeBaseService/DeleteKnowledgeBaseById"
+	KnowledgeBaseService_CreateKnowledgeBase_FullMethodName     = "/knowdateapp.knowledge.v1.knowledge_base.KnowledgeBaseService/CreateKnowledgeBase"
+	KnowledgeBaseService_GetKnowledgeBaseById_FullMethodName    = "/knowdateapp.knowledge.v1.knowledge_base.KnowledgeBaseService/GetKnowledgeBaseById"
+	KnowledgeBaseService_DeleteKnowledgeBaseById_FullMethodName = "/knowdateapp.knowledge.v1.knowledge_base.KnowledgeBaseService/DeleteKnowledgeBaseById"
 )
 
 // KnowledgeBaseServiceClient is the client API for KnowledgeBaseService service.
@@ -162,7 +162,7 @@ func _KnowledgeBaseService_DeleteKnowledgeBaseById_Handler(srv interface{}, ctx 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var KnowledgeBaseService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "knowdateapp.knowledge.v1.base.KnowledgeBaseService",
+	ServiceName: "knowdateapp.knowledge.v1.knowledge_base.KnowledgeBaseService",
 	HandlerType: (*KnowledgeBaseServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -179,5 +179,5 @@ var KnowledgeBaseService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/v1/base/base.proto",
+	Metadata: "api/v1/knowledge_base/knowledge_base.proto",
 }

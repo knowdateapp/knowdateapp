@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package knowdateapp.knowledge.v1.base;
+package knowdateapp.knowledge.v1.knowledge_base;
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-import "api/v1/common/base.proto";
+import "api/v1/common/knowledge_base.proto";
 
-option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/internal/pb/api/v1/base";
+option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/internal/pb/api/v1/knowledge_base";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
@@ -20,7 +20,7 @@ service KnowledgeBaseService {
 
   rpc CreateKnowledgeBase(CreateKnowledgeBaseRequest) returns (CreateKnowledgeBaseResponse) {
     option (google.api.http) = {
-      post: "/api/v1/bases"
+      post: "/api/v1/knowledge-bases"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -30,7 +30,7 @@ service KnowledgeBaseService {
 
   rpc GetKnowledgeBaseById(GetKnowledgeBaseByIdRequest) returns (GetKnowledgeBaseByIdResponse) {
     option (google.api.http) = {
-      get: "/api/v1/bases/{id}"
+      get: "/api/v1/knowledge-bases/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       operation_id: "GetKnowledgeBaseById"
@@ -39,7 +39,7 @@ service KnowledgeBaseService {
 
   rpc DeleteKnowledgeBaseById(DeleteKnowledgeBaseByIdRequest) returns (DeleteKnowledgeBaseByIdResponse) {
     option (google.api.http) = {
-      delete: "/api/v1/bases/{id}"
+      delete: "/api/v1/knowledge-bases/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       operation_id: "DeleteKnowledgeBaseById"
@@ -55,7 +55,7 @@ message CreateKnowledgeBaseRequest {
 }
 
 message CreateKnowledgeBaseResponse {
-  common.Base base = 1;
+  common.KnowledgeBase knowledge_base = 1;
 }
 
 message GetKnowledgeBaseByIdRequest {
@@ -63,7 +63,7 @@ message GetKnowledgeBaseByIdRequest {
 }
 
 message GetKnowledgeBaseByIdResponse {
-  common.Base base = 1;
+  common.KnowledgeBase knowledge_base = 1;
 }
 
 message DeleteKnowledgeBaseByIdRequest {
