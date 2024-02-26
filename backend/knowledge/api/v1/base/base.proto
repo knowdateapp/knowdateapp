@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package knowdateapp.knowledge.v1.base;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "api/v1/common/base.proto";
+
+option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/internal/pb/api/v1/base";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Knowledge Base Service"
+    version: "0.0.1"
+  }
+};
+
+service KnowledgeBaseService {
+
+  rpc CreateKnowledgeBase(CreateKnowledgeBaseRequest) returns (CreateKnowledgeBaseResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/bases"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "CreateKnowledgeBase"
+    };
+  }
+
+  rpc GetKnowledgeBaseById(GetKnowledgeBaseByIdRequest) returns (GetKnowledgeBaseByIdResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/bases/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "GetKnowledgeBaseById"
+    };
+  }
+
+  rpc DeleteKnowledgeBaseById(DeleteKnowledgeBaseByIdRequest) returns (DeleteKnowledgeBaseByIdResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/bases/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "DeleteKnowledgeBaseById"
+    };
+  }
+
+}
+
+message CreateKnowledgeBaseRequest {
+  string owner_id = 1;
+  string topic = 2;
+  string description = 3;
+}
+
+message CreateKnowledgeBaseResponse {
+  common.Base base = 1;
+}
+
+message GetKnowledgeBaseByIdRequest {
+  string id = 1;
+}
+
+message GetKnowledgeBaseByIdResponse {
+  common.Base base = 1;
+}
+
+message DeleteKnowledgeBaseByIdRequest {
+  string id = 1;
+}
+
+message DeleteKnowledgeBaseByIdResponse {
+}

@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package knowdateapp.knowledge.v1.page;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "api/v1/common/page.proto";
+
+option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/internal/pb/api/v1/page";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Page Service"
+    version: "0.0.1"
+  }
+};
+
+service PageService {
+
+  rpc CreatePage(CreatePageRequest) returns (CreatePageResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/bases/{base_id}/collections/{collection_id}/pages"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "CreatePage"
+    };
+  }
+
+  rpc GetPageById(GetPageByIdRequest) returns (GetPageByIdResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/bases/{base_id}/collections/{collection_id}/pages/{page_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "GetPageById"
+    };
+  }
+
+  rpc DeletePageById(DeletePageByIdRequest) returns (DeletePageByIdResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/bases/{base_id}/collections/{collection_id}/pages/{page_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      operation_id: "DeletePageById"
+    };
+  }
+
+}
+
+message CreatePageRequest {
+  string base_id = 1;
+  string collection_id = 2;
+  string owner_id = 3;
+  string topic = 4;
+  string description = 5;
+}
+
+message CreatePageResponse {
+  common.Page page = 1;
+}
+
+message GetPageByIdRequest {
+  string base_id = 1;
+  string collection_id = 2;
+  string page_id = 3;
+}
+
+message GetPageByIdResponse {
+  common.Page page = 1;
+}
+
+message DeletePageByIdRequest {
+  string base_id = 1;
+  string collection_id = 2;
+  string page_id = 3;
+}
+
+message DeletePageByIdResponse {
+}

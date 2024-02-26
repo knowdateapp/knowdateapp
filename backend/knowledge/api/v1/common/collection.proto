@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package knowdateapp.knowledge.v1.common;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/knowdateapp/knowdateapp/backend/knowledge/internal/pb/api/v1/common";
+
+message Collection {
+  string id = 1;
+  string base_id = 2;
+  string owner_id = 3;
+  string topic = 4;
+  string description = 5;
+  repeated string page_ids = 6;
+  google.protobuf.Timestamp created_at = 7;
+}

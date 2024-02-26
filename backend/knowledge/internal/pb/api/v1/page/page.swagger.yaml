@@ -1,0 +1,151 @@
+swagger: "2.0"
+info:
+  title: Page Service
+  version: 0.0.1
+tags:
+  - name: PageService
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v1/bases/{base_id}/collections/{collection_id}/pages:
+    post:
+      operationId: CreatePage
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pageCreatePageResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: base_id
+          in: path
+          required: true
+          type: string
+        - name: collection_id
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PageServiceCreatePageBody'
+      tags:
+        - PageService
+  /api/v1/bases/{base_id}/collections/{collection_id}/pages/{page_id}:
+    get:
+      operationId: GetPageById
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pageGetPageByIdResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: base_id
+          in: path
+          required: true
+          type: string
+        - name: collection_id
+          in: path
+          required: true
+          type: string
+        - name: page_id
+          in: path
+          required: true
+          type: string
+      tags:
+        - PageService
+    delete:
+      operationId: DeletePageById
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pageDeletePageByIdResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: base_id
+          in: path
+          required: true
+          type: string
+        - name: collection_id
+          in: path
+          required: true
+          type: string
+        - name: page_id
+          in: path
+          required: true
+          type: string
+      tags:
+        - PageService
+definitions:
+  PageServiceCreatePageBody:
+    type: object
+    properties:
+      owner_id:
+        type: string
+      topic:
+        type: string
+      description:
+        type: string
+  commonPage:
+    type: object
+    properties:
+      id:
+        type: string
+      base_id:
+        type: string
+      collection_id:
+        type: string
+      owner_id:
+        type: string
+      topic:
+        type: string
+      description:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+  pageCreatePageResponse:
+    type: object
+    properties:
+      page:
+        $ref: '#/definitions/commonPage'
+  pageDeletePageByIdResponse:
+    type: object
+  pageGetPageByIdResponse:
+    type: object
+    properties:
+      page:
+        $ref: '#/definitions/commonPage'
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
