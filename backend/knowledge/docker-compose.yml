@@ -1,0 +1,11 @@
+version: '3.8'
+
+networks:
+  knowledge:
+
+services:
+  app:
+    build:
+      dockerfile: ../build/Dockerfile
+    ports:
+      - '8082:82'
