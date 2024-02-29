@@ -46,14 +46,14 @@ func request_CollectionService_CreateCollection_0(ctx context.Context, marshaler
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	msg, err := client.CreateCollection(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -76,14 +76,14 @@ func local_request_CollectionService_CreateCollection_0(ctx context.Context, mar
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	msg, err := server.CreateCollection(ctx, &protoReq)
@@ -102,14 +102,14 @@ func request_CollectionService_GetCollectionById_0(ctx context.Context, marshale
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	val, ok = pathParams["collection_id"]
@@ -138,14 +138,14 @@ func local_request_CollectionService_GetCollectionById_0(ctx context.Context, ma
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	val, ok = pathParams["collection_id"]
@@ -174,14 +174,14 @@ func request_CollectionService_DeleteCollectionById_0(ctx context.Context, marsh
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	val, ok = pathParams["collection_id"]
@@ -210,14 +210,14 @@ func local_request_CollectionService_DeleteCollectionById_0(ctx context.Context,
 		_   = err
 	)
 
-	val, ok = pathParams["base_id"]
+	val, ok = pathParams["knowledge_base_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "base_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "knowledge_base_id")
 	}
 
-	protoReq.BaseId, err = runtime.String(val)
+	protoReq.KnowledgeBaseId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "base_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "knowledge_base_id", err)
 	}
 
 	val, ok = pathParams["collection_id"]
@@ -249,7 +249,7 @@ func RegisterCollectionServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/CreateCollection", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/CreateCollection", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -274,7 +274,7 @@ func RegisterCollectionServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/GetCollectionById", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections/{collection_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/GetCollectionById", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -299,7 +299,7 @@ func RegisterCollectionServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/DeleteCollectionById", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections/{collection_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/DeleteCollectionById", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -363,7 +363,7 @@ func RegisterCollectionServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/CreateCollection", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/CreateCollection", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -385,7 +385,7 @@ func RegisterCollectionServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/GetCollectionById", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections/{collection_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/GetCollectionById", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -407,7 +407,7 @@ func RegisterCollectionServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/DeleteCollectionById", runtime.WithHTTPPathPattern("/api/v1/bases/{base_id}/collections/{collection_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/knowdateapp.knowledge.v1.collection.CollectionService/DeleteCollectionById", runtime.WithHTTPPathPattern("/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -427,11 +427,11 @@ func RegisterCollectionServiceHandlerClient(ctx context.Context, mux *runtime.Se
 }
 
 var (
-	pattern_CollectionService_CreateCollection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "bases", "base_id", "collections"}, ""))
+	pattern_CollectionService_CreateCollection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "knowledge-bases", "knowledge_base_id", "collections"}, ""))
 
-	pattern_CollectionService_GetCollectionById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "bases", "base_id", "collections", "collection_id"}, ""))
+	pattern_CollectionService_GetCollectionById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "knowledge-bases", "knowledge_base_id", "collections", "collection_id"}, ""))
 
-	pattern_CollectionService_DeleteCollectionById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "bases", "base_id", "collections", "collection_id"}, ""))
+	pattern_CollectionService_DeleteCollectionById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "v1", "knowledge-bases", "knowledge_base_id", "collections", "collection_id"}, ""))
 )
 
 var (

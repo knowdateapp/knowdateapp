@@ -9,7 +9,7 @@ consumes:
 produces:
   - application/json
 paths:
-  /api/v1/bases/{base_id}/collections:
+  /api/v1/knowledge-bases/{knowledge_base_id}/collections:
     post:
       operationId: CreateCollection
       responses:
@@ -22,7 +22,7 @@ paths:
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: base_id
+        - name: knowledge_base_id
           in: path
           required: true
           type: string
@@ -33,7 +33,7 @@ paths:
             $ref: '#/definitions/CollectionServiceCreateCollectionBody'
       tags:
         - CollectionService
-  /api/v1/bases/{base_id}/collections/{collection_id}:
+  /api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}:
     get:
       operationId: GetCollectionById
       responses:
@@ -46,7 +46,7 @@ paths:
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: base_id
+        - name: knowledge_base_id
           in: path
           required: true
           type: string
@@ -68,7 +68,7 @@ paths:
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: base_id
+        - name: knowledge_base_id
           in: path
           required: true
           type: string
@@ -105,7 +105,7 @@ definitions:
     properties:
       id:
         type: string
-      base_id:
+      knowledge_base_id:
         type: string
       owner_id:
         type: string
@@ -113,7 +113,7 @@ definitions:
         type: string
       description:
         type: string
-      page_ids:
+      topic_ids:
         type: array
         items:
           type: string

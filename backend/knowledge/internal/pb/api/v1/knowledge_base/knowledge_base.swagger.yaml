@@ -9,14 +9,14 @@ consumes:
 produces:
   - application/json
 paths:
-  /api/v1/bases:
+  /api/v1/knowledge-bases:
     post:
       operationId: CreateKnowledgeBase
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/baseCreateKnowledgeBaseResponse'
+            $ref: '#/definitions/knowledge_baseCreateKnowledgeBaseResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -26,17 +26,17 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/baseCreateKnowledgeBaseRequest'
+            $ref: '#/definitions/knowledge_baseCreateKnowledgeBaseRequest'
       tags:
         - KnowledgeBaseService
-  /api/v1/bases/{id}:
+  /api/v1/knowledge-bases/{id}:
     get:
       operationId: GetKnowledgeBaseById
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/baseGetKnowledgeBaseByIdResponse'
+            $ref: '#/definitions/knowledge_baseGetKnowledgeBaseByIdResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -54,7 +54,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/baseDeleteKnowledgeBaseByIdResponse'
+            $ref: '#/definitions/knowledge_baseDeleteKnowledgeBaseByIdResponse'
         default:
           description: An unexpected error response.
           schema:
@@ -67,28 +67,27 @@ paths:
       tags:
         - KnowledgeBaseService
 definitions:
-  baseCreateKnowledgeBaseRequest:
+  commonCollection:
     type: object
     properties:
+      id:
+        type: string
+      knowledge_base_id:
+        type: string
       owner_id:
         type: string
       topic:
         type: string
       description:
         type: string
-  baseCreateKnowledgeBaseResponse:
-    type: object
-    properties:
-      base:
-        $ref: '#/definitions/commonBase'
-  baseDeleteKnowledgeBaseByIdResponse:
-    type: object
-  baseGetKnowledgeBaseByIdResponse:
-    type: object
-    properties:
-      base:
-        $ref: '#/definitions/commonBase'
-  commonBase:
+      topic_ids:
+        type: array
+        items:
+          type: string
+      created_at:
+        type: string
+        format: date-time
+  commonKnowledgeBase:
     type: object
     properties:
       id:
@@ -107,26 +106,27 @@ definitions:
       created_at:
         type: string
         format: date-time
-  commonCollection:
+  knowledge_baseCreateKnowledgeBaseRequest:
     type: object
     properties:
-      id:
-        type: string
-      base_id:
-        type: string
       owner_id:
         type: string
       topic:
         type: string
       description:
         type: string
-      page_ids:
-        type: array
-        items:
-          type: string
-      created_at:
-        type: string
-        format: date-time
+  knowledge_baseCreateKnowledgeBaseResponse:
+    type: object
+    properties:
+      knowledge_base:
+        $ref: '#/definitions/commonKnowledgeBase'
+  knowledge_baseDeleteKnowledgeBaseByIdResponse:
+    type: object
+  knowledge_baseGetKnowledgeBaseByIdResponse:
+    type: object
+    properties:
+      knowledge_base:
+        $ref: '#/definitions/commonKnowledgeBase'
   protobufAny:
     type: object
     properties:
