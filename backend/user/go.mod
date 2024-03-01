@@ -1,6 +1,6 @@
 module github.com/knowdateapp/knowdateapp/backend/user
 
-go 1.20
+go 1.22
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
