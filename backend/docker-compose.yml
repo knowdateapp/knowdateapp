@@ -1,0 +1,27 @@
+version: '3.8'
+
+networks:
+  gateway:
+  knowledge:
+
+services:
+  gateway:
+    build:
+      context: ./gateway/
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - gateway
+    ports:
+      - '8000:80'
+    command:
+      - '-knowledge-service-address=knowledge:82'
+      - '-user-service-address=user:82'
+    depends_on:
+      - knowledge
+  knowledge:
+    extends:
+      file: ./knowledge/docker-compose.yml
+      service: app
+    networks:
+      - gateway

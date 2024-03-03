@@ -14,6 +14,7 @@ fast-generate: .generate
 
 	$(MAKE) -C user generate
 	$(MAKE) -C knowledge generate
+	$(MAKE) -C gateway generate
 
 .PHONY: install-bin-deps
 install-bin-deps:
