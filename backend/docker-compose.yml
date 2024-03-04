@@ -4,6 +4,9 @@ networks:
   gateway:
   knowledge:
 
+volumes:
+  knowledge_db:
+
 services:
   gateway:
     build:
@@ -14,14 +17,18 @@ services:
       - gateway
     ports:
       - '8000:80'
+    depends_on:
+      - knowledge_app
     command:
       - '-knowledge-service-address=knowledge:82'
       - '-user-service-address=user:82'
-    depends_on:
-      - knowledge
-  knowledge:
+  knowledge_app:
     extends:
       file: ./knowledge/docker-compose.yml
-      service: app
+      service: knowledge_app
     networks:
       - gateway
+  knowledge_db:
+    extends:
+      file: ./knowledge/docker-compose.yml
+      service: knowledge_db
