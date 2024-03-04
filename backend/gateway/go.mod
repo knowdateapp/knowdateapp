@@ -1,9 +1,8 @@
-module github.com/knowdateapp/knowdateapp/backend/knowledge
+module github.com/knowdateapp/knowdateapp/backend/gateway
 
-go 1.22
+go 1.22.0
 
 require (
-	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20240228224816-df926f6c8641
 	google.golang.org/grpc v1.62.0

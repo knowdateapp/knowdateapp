@@ -21,4 +21,4 @@ EXPOSE 82/tcp
 
 COPY --from=build /go/app/bin /app
 
-ENTRYPOINT ./server
+ENTRYPOINT [ "./server" ]

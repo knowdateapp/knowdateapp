@@ -27,7 +27,7 @@ func main() {
 	reflection.Register(server)
 
 	// Start application.
-	log.Println("Server startup on port:", ServerAddressGRPC)
+	log.Println("Knowledge server startup on port:", ServerAddressGRPC)
 
 	lis, err := net.Listen("tcp", ServerAddressGRPC)
 	if err != nil {
