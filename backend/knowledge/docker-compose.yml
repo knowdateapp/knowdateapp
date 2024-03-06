@@ -17,6 +17,10 @@ services:
       - '8012:82'
     depends_on:
       - knowledge_db
+    command:
+      - '-database-username=knowledge_user'
+      - '-database-password=knowledge_user_password'
+      - '-database-address=knowledge_db:27017'
   knowledge_db:
     image: mongodb/mongodb-community-server:7.0-ubuntu2204
     restart: on-failure
