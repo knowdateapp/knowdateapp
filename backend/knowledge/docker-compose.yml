@@ -1,0 +1,14 @@
+version: '3.8'
+
+networks:
+  knowledge:
+
+services:
+  app:
+    build:
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - knowledge
+    ports:
+      - '8012:82'

@@ -20,7 +20,7 @@ service CollectionService {
 
   rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {
     option (google.api.http) = {
-      post: "/api/v1/bases/{base_id}/collections"
+      post: "/api/v1/knowledge-bases/{knowledge_base_id}/collections"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -30,7 +30,7 @@ service CollectionService {
 
   rpc GetCollectionById(GetCollectionByIdRequest) returns (GetCollectionByIdResponse) {
     option (google.api.http) = {
-      get: "/api/v1/bases/{base_id}/collections/{collection_id}"
+      get: "/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       operation_id: "GetCollectionById"
@@ -39,7 +39,7 @@ service CollectionService {
 
   rpc DeleteCollectionById(DeleteCollectionByIdRequest) returns (DeleteCollectionByIdResponse) {
     option (google.api.http) = {
-      delete: "/api/v1/bases/{base_id}/collections/{collection_id}"
+      delete: "/api/v1/knowledge-bases/{knowledge_base_id}/collections/{collection_id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       operation_id: "DeleteCollectionById"
@@ -49,7 +49,7 @@ service CollectionService {
 }
 
 message CreateCollectionRequest {
-  string base_id = 1;
+  string knowledge_base_id = 1;
   string owner_id = 2;
   string topic = 3;
   string description = 4;
@@ -60,7 +60,7 @@ message CreateCollectionResponse {
 }
 
 message GetCollectionByIdRequest {
-  string base_id = 1;
+  string knowledge_base_id = 1;
   string collection_id = 2;
 }
 
@@ -69,7 +69,7 @@ message GetCollectionByIdResponse {
 }
 
 message DeleteCollectionByIdRequest {
-  string base_id = 1;
+  string knowledge_base_id = 1;
   string collection_id = 2;
 }
 
