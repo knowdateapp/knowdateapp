@@ -2,20 +2,25 @@ package auth
 
 import (
 	"context"
+	"log"
 
 	"github.com/golang-jwt/jwt/v5"
-	desc "github.com/knowdateapp/knowdateapp/backend/user/internal/pb/api/v1/auth"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	desc "github.com/knowdateapp/knowdateapp/backend/user/internal/pb/api/v1/auth"
 )
 
 var signingKey = []byte("test")
 
 func (i *Implementation) LoginAnonymousUser(_ context.Context, request *desc.LoginAnonymousUserRequest) (*desc.LoginAnonymousUserResponse, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id": request.Id,
+	})
 	tokenString, err := token.SignedString(signingKey)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "token generation error")
+		log.Println("auth token generation error")
+		return nil, status.Error(codes.Internal, "internal server error")
 	}
 	return &desc.LoginAnonymousUserResponse{
 		Token:        tokenString,

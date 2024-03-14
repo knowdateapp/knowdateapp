@@ -16,7 +16,7 @@ import (
 
 func main() {
 	const (
-		ServerAddressGRPC = ":90"
+		ServerAddressGRPC = ":1028"
 	)
 
 	// GRPC server setup.
@@ -30,20 +30,21 @@ func main() {
 	// Start application.
 	log.Println("User server startup on port:", ServerAddressGRPC)
 
-	go func() {
-		lis, err := net.Listen("tcp", ServerAddressGRPC)
-		if err != nil {
-			log.Fatalln("Can't start application:", err)
-		}
-
-		err = server.Serve(lis)
-		if err != nil {
-			log.Fatalln("Can't start application:", err)
-		}
-	}()
+	lis, err := net.Listen("tcp", ServerAddressGRPC)
+	if err != nil {
+		log.Fatalln("Can't start application:", err)
+	}
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		err = server.Serve(lis)
+		if err != nil {
+			log.Println("Server error:", err)
+			close(stop)
+		}
+	}()
 
 	<-stop
 	server.GracefulStop()
