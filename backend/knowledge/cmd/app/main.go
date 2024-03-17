@@ -17,6 +17,7 @@ import (
 	"github.com/knowdateapp/knowdateapp/backend/knowledge/internal/app/v1/collection"
 	"github.com/knowdateapp/knowdateapp/backend/knowledge/internal/app/v1/knowledge_base"
 	"github.com/knowdateapp/knowdateapp/backend/knowledge/internal/app/v1/topic"
+	"github.com/knowdateapp/knowdateapp/backend/knowledge/internal/domain/services"
 )
 
 func main() {
@@ -71,10 +72,13 @@ func main() {
 
 	log.Printf("The connection to the database has been established: user=%s, address=%s", *databaseUsername, *databaseAddress)
 
+	// Services setup.
+	knowledgeBaseService := services.NewKnowledgeBaseService()
+
 	// GRPC server setup.
 	server := grpc.NewServer()
 
-	knowledge_base.RegisterGRPCServer(server, knowledge_base.NewKnowledgeBaseService())
+	knowledge_base.RegisterGRPCServer(server, knowledge_base.NewKnowledgeBaseService(knowledgeBaseService))
 	collection.RegisterGRPCServer(server, collection.NewCollectionService())
 	topic.RegisterGRPCServer(server, topic.NewTopicService())
 
