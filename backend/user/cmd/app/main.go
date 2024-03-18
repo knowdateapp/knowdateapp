@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -18,6 +20,19 @@ func main() {
 	const (
 		ServerAddressGRPC = ":1028"
 	)
+
+	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatalln("Can't create connection pool:", err)
+	}
+	defer pool.Close()
+
+	var version string
+	err = pool.QueryRow(context.Background(), "select version()").Scan(&version)
+	if err != nil {
+		log.Println("QueryRow failed:", err)
+	}
+	log.Println("version: ", version)
 
 	// GRPC server setup.
 	server := grpc.NewServer()
