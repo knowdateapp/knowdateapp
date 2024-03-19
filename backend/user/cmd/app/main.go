@@ -30,9 +30,10 @@ func main() {
 	var version string
 	err = pool.QueryRow(context.Background(), "select version()").Scan(&version)
 	if err != nil {
-		log.Println("QueryRow failed:", err)
+		log.Fatalln("QueryRow failed:", err)
 	}
-	log.Println("version: ", version)
+
+	log.Println("version:", version)
 
 	// GRPC server setup.
 	server := grpc.NewServer()
