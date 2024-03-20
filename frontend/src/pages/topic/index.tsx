@@ -1,1 +1,1 @@
-export { TopicPage } from './ui/topic-page.tsx';
+export { TopicPage } from './ui';

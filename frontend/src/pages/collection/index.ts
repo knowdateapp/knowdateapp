@@ -1,1 +1,1 @@
-export { CollectionPage } from './ui/collection-page.tsx';
+export { CollectionPage } from './ui';

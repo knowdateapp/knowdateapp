@@ -3,13 +3,7 @@ import { CollectionPage } from 'pages/collection';
 import { KnowledgeBasePage } from 'pages/knowledge-base';
 import { MainPage } from 'pages/main';
 import { TopicPage } from 'pages/topic';
-
-export enum Routes {
-  Main = '/',
-  KnowledgeBase = '/knowledge-base/:knowledgeBaseId',
-  Collection = 'collection/:collectionId',
-  Topic = 'topic/:topicNumber',
-}
+import { Routes } from 'shared/config';
 
 export const router = createBrowserRouter([
   {

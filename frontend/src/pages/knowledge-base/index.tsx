@@ -1,1 +1,1 @@
-export { KnowledgeBasePage } from './ui/knowledge-base-page.tsx';
+export { KnowledgeBasePage } from './ui';
