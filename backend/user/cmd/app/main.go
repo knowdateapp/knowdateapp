@@ -1,9 +1,9 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
-	"os"
 	"os/signal"
 	"syscall"
 
@@ -35,18 +35,18 @@ func main() {
 		log.Fatalln("Can't start application:", err)
 	}
 
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+	defer stop()
 
 	go func() {
 		err = server.Serve(lis)
 		if err != nil {
 			log.Println("Server error:", err)
-			close(stop)
 		}
+		stop()
 	}()
 
-	<-stop
+	<-ctx.Done()
 	server.GracefulStop()
 	log.Println("Server stopped")
 }

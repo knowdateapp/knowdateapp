@@ -19,7 +19,7 @@ func (i *Implementation) LoginAnonymousUser(_ context.Context, request *desc.Log
 	})
 	tokenString, err := token.SignedString(signingKey)
 	if err != nil {
-		log.Println("auth token generation error")
+		log.Println("Auth token generation error:", err)
 		return nil, status.Error(codes.Internal, "internal server error")
 	}
 	return &desc.LoginAnonymousUserResponse{
