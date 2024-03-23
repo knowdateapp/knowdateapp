@@ -12,6 +12,7 @@ import (
 type knowledgeBaseRepositoryInterface interface {
 	Create(ctx context.Context, knowledgeBase *entities.KnowledgeBase) error
 	GetById(ctx context.Context, id uuid.UUID) (*entities.KnowledgeBase, error)
+	DeleteById(ctx context.Context, id uuid.UUID) error
 }
 
 type KnowledgeBaseService struct {
@@ -45,4 +46,12 @@ func (s *KnowledgeBaseService) Create(
 	}
 
 	return knowledgeBase, nil
+}
+
+func (s *KnowledgeBaseService) GetById(ctx context.Context, id uuid.UUID) (*entities.KnowledgeBase, error) {
+	return s.knowledgeBaseRepository.GetById(ctx, id)
+}
+
+func (s *KnowledgeBaseService) DeleteById(ctx context.Context, id uuid.UUID) error {
+	return s.knowledgeBaseRepository.DeleteById(ctx, id)
 }

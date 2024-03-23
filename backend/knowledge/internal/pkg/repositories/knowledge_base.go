@@ -54,3 +54,9 @@ func (r *KnowledgeBaseRepository) GetById(ctx context.Context, id uuid.UUID) (*e
 
 	return &knowledgeBase, nil
 }
+
+func (r *KnowledgeBaseRepository) DeleteById(ctx context.Context, id uuid.UUID) error {
+	filter := bson.M{"knowledge_base_id": id.String()}
+	_, err := r.db.Database(r.dbName).Collection(r.collectionName).DeleteOne(ctx, filter)
+	return err
+}
