@@ -9,11 +9,20 @@ import (
 	"github.com/knowdateapp/knowdateapp/backend/knowledge/internal/domain/entities"
 )
 
-type KnowledgeBaseService struct {
+type knowledgeBaseRepositoryInterface interface {
+	Create(ctx context.Context, knowledgeBase *entities.KnowledgeBase) error
+	GetById(ctx context.Context, id uuid.UUID) (*entities.KnowledgeBase, error)
+	DeleteById(ctx context.Context, id uuid.UUID) error
 }
 
-func NewKnowledgeBaseService() *KnowledgeBaseService {
-	return &KnowledgeBaseService{}
+type KnowledgeBaseService struct {
+	knowledgeBaseRepository knowledgeBaseRepositoryInterface
+}
+
+func NewKnowledgeBaseService(knowledgeBaseRepository knowledgeBaseRepositoryInterface) *KnowledgeBaseService {
+	return &KnowledgeBaseService{
+		knowledgeBaseRepository: knowledgeBaseRepository,
+	}
 }
 
 func (s *KnowledgeBaseService) Create(
@@ -22,7 +31,7 @@ func (s *KnowledgeBaseService) Create(
 	topic string,
 	description string,
 ) (*entities.KnowledgeBase, error) {
-	entity := &entities.KnowledgeBase{
+	knowledgeBase := &entities.KnowledgeBase{
 		ID:          uuid.New(),
 		OwnerID:     ownerID,
 		Topic:       topic,
@@ -31,5 +40,18 @@ func (s *KnowledgeBaseService) Create(
 		CreatedAt:   time.Now(),
 	}
 
-	return entity, nil
+	err := s.knowledgeBaseRepository.Create(ctx, knowledgeBase)
+	if err != nil {
+		return nil, err
+	}
+
+	return knowledgeBase, nil
+}
+
+func (s *KnowledgeBaseService) GetById(ctx context.Context, id uuid.UUID) (*entities.KnowledgeBase, error) {
+	return s.knowledgeBaseRepository.GetById(ctx, id)
+}
+
+func (s *KnowledgeBaseService) DeleteById(ctx context.Context, id uuid.UUID) error {
+	return s.knowledgeBaseRepository.DeleteById(ctx, id)
 }
