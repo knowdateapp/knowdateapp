@@ -1,0 +1,29 @@
+version: '3.8'
+
+networks:
+  user:
+
+services:
+  app:
+    build:
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - user
+    ports:
+      - '8001:1028'
+    environment:
+      DATABASE_URL: 'host=db user=postgres password=postgres dbname=user sslmode=disable'
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    restart: on-failure
+    networks:
+      - user
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: 'user'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
