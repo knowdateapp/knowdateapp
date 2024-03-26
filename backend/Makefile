@@ -44,3 +44,13 @@ proto-deps-vendor:
 	curl -so $(VENDOR_PROTO)/google/protobuf/timestamp.proto https://raw.githubusercontent.com/protocolbuffers/protobuf/main/src/google/protobuf/timestamp.proto
 	curl -so $(VENDOR_PROTO)/protoc-gen-openapiv2/options/annotations.proto https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/main/protoc-gen-openapiv2/options/annotations.proto
 	curl -so $(VENDOR_PROTO)/protoc-gen-openapiv2/options/openapiv2.proto https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/main/protoc-gen-openapiv2/options/openapiv2.proto
+
+.PHONY: docker-config
+docker-config:
+	docker compose \
+		--project-name knowdateapp \
+		--project-directory . \
+		--file ./docker-compose.override.yml \
+		--file ./gateway/docker-compose.yml \
+		--file ./knowledge/docker-compose.yml \
+		config --output docker-compose.yml

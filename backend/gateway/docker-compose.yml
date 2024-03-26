@@ -1,0 +1,17 @@
+version: '3.8'
+
+networks:
+  gateway:
+
+services:
+  gateway_app:
+    build:
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - gateway
+    ports:
+      - '8000:80'
+    command:
+      - '-knowledge-service-address=knowledge_app:82'
+      - '-user-service-address=user_app:82'
