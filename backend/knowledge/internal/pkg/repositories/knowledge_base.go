@@ -38,7 +38,7 @@ func (r *KnowledgeBaseRepository) Create(ctx context.Context, knowledgeBase *ent
 func (r *KnowledgeBaseRepository) GetById(ctx context.Context, id uuid.UUID) (*entities.KnowledgeBase, error) {
 	var (
 		knowledgeBase = entities.KnowledgeBase{}
-		filter        = bson.M{"knowledge_base_id": id.String()}
+		filter        = bson.M{"knowledge_base_id": id}
 	)
 
 	err := r.db.Database(r.dbName).
