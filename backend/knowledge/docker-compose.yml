@@ -3,8 +3,11 @@ version: '3.8'
 networks:
   knowledge:
 
+volumes:
+  knowledge_db:
+
 services:
-  app:
+  knowledge_app:
     build:
       dockerfile: ../build/Dockerfile
     restart: on-failure
@@ -12,3 +15,21 @@ services:
       - knowledge
     ports:
       - '8012:82'
+    depends_on:
+      - knowledge_db
+    command:
+      - '-database-username=knowledge_user'
+      - '-database-password=knowledge_user_password'
+      - '-database-address=knowledge_db:27017'
+  knowledge_db:
+    image: mongodb/mongodb-community-server:7.0-ubuntu2204
+    restart: on-failure
+    networks:
+      - knowledge
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'knowledge_db:/data/db'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: knowledge_user
+      MONGO_INITDB_ROOT_PASSWORD: knowledge_user_password
