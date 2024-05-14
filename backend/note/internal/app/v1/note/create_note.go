@@ -6,26 +6,14 @@ import (
 	"mime"
 	"net/http"
 
-	"github.com/deepmap/oapi-codegen/v2/pkg/util"
-
 	desc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
 	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/models"
 )
 
-func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request) {
+func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, workspace desc.Workspace) {
 	w.Header().Add("Content-Type", mime.TypeByExtension(".json"))
 
-	if !util.IsMediaTypeJson(r.Header.Get("Content-Type")) {
-		w.WriteHeader(http.StatusBadRequest)
-		resp := desc.DefaultErrorResponse{
-			// TODO: make it constant
-			Code:    "request-type-error",
-			Message: "invalid content type",
-		}
-		_ = json.NewEncoder(w).Encode(resp)
-	}
-
-	request := desc.CreateNoteJSONRequestBody{}
+	request := desc.CreateNoteJSONBody{}
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		resp := desc.DefaultErrorResponse{
@@ -39,22 +27,24 @@ func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
-	note, err := i.service.Create(ctx, &models.Note{
-		Id:      request.Id.String(),
-		Title:   request.Title,
-		OwnerId: request.OwnerId.String(),
+	id, err := i.service.Create(ctx, &models.Note{
+		Title:     request.Title,
+		Workspace: workspace,
 	})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		resp := desc.DefaultErrorResponse{
 			// TODO: make it constant
 			Code:    "not-created",
-			Message: "note not created",
+			Message: "note was not created",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
 	}
 
-	_ = note
+	response := &desc.CreateNoteResponse{
+		Id: id,
+	}
 
 	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(response)
 }

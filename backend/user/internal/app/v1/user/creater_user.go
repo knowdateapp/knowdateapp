@@ -48,7 +48,7 @@ func (i *Implementation) CreateUser(w http.ResponseWriter, r *http.Request) {
 		resp := desc.DefaultErrorResponse{
 			// TODO: make it constant
 			Code:    "not-created",
-			Message: "user not created",
+			Message: "user was not created",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
 	}

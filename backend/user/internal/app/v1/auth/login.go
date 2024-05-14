@@ -49,7 +49,7 @@ func (i *Implementation) Login(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(resp)
 	}
 
-	response := desc.LoginResponse{
+	response := &desc.LoginResponse{
 		Token: token,
 	}
 

@@ -56,13 +56,13 @@ func main() {
 		SetTimeout(5 * time.Second)
 	err := mongoClientOptions.Validate()
 	if err != nil {
-		logger.Error(fmt.Sprint("MongoDB client options are invalid:", err))
+		logger.Error(fmt.Sprint("mongo client options are invalid:", err))
 		os.Exit(1)
 	}
 
 	db, err := mongo.Connect(ctx, mongoClientOptions)
 	if err != nil {
-		logger.Error(fmt.Sprint("Can't connect to MongoDB:", err))
+		logger.Error(fmt.Sprint("can not connect to MongoDB:", err))
 		os.Exit(1)
 	}
 
@@ -72,7 +72,7 @@ func main() {
 		defer dbDisconnectCancel()
 
 		if dErr := db.Disconnect(dbDisconnectCtx); dErr != nil {
-			logger.Error(fmt.Sprint("The database client can't be disconnected:", dErr))
+			logger.Error(fmt.Sprint("the database client can not be disconnected:", dErr))
 		}
 	}()
 
@@ -80,11 +80,11 @@ func main() {
 	result := bson.M{}
 	err = db.Database("users").RunCommand(ctx, bson.D{{"ping", 1}}).Decode(&result)
 	if err != nil {
-		logger.Error("The connection to the database has not been established:", err)
+		logger.Error("the connection to the database has not been established:", err)
 		os.Exit(1)
 	}
 
-	logger.Info(fmt.Sprintf("The connection to the database has been established: user=%s, address=%s", *dbUsername, *dbAddress))
+	logger.Info(fmt.Sprintf("the connection to the database has been established: user=%s, address=%s", *dbUsername, *dbAddress))
 
 	// Services setup.
 	userRepository := repositories.NewUserRepository(db)
@@ -116,10 +116,10 @@ func main() {
 		debugRouter.Use(corsHandler)
 		debugRouter.Handle("/api/v1/*", http.StripPrefix("/api/v1/", http.FileServer(http.Dir("./api/v1/"))))
 
-		logger.Info(fmt.Sprint("Start debug service on port:", DebugServerAddress))
+		logger.Info(fmt.Sprint("start debug service on port:", DebugServerAddress))
 
 		if dErr := http.ListenAndServe(DebugServerAddress, debugRouter); dErr != nil {
-			logger.Error(fmt.Sprint("Can't run debug application:", dErr))
+			logger.Error(fmt.Sprint("can not run debug application:", dErr))
 			os.Exit(1)
 		}
 	}()
@@ -131,10 +131,10 @@ func main() {
 	userdesc.RegisterUserServerHandler(router, userServer)
 	authdesc.RegisterAuthServerHandler(router, authServer)
 
-	logger.Info(fmt.Sprint("User server startup on port:", ServerAddress))
+	logger.Info(fmt.Sprint("user server startup on port:", ServerAddress))
 
 	if err = http.ListenAndServe(ServerAddress, router); err != nil {
-		logger.Error(fmt.Sprint("Can't run application:", err))
+		logger.Error(fmt.Sprint("can not run application:", err))
 		os.Exit(1)
 	}
 

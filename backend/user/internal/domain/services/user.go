@@ -27,7 +27,7 @@ func NewUserService(repository UserRepository, logger *slog.Logger) *UserService
 func (s *UserService) Create(ctx context.Context, user *models.User) error {
 	err := s.repository.Create(ctx, user)
 	if err != nil {
-		s.logger.Error(fmt.Sprintf("User %s not created: %s", user.Username, err))
+		s.logger.Error(fmt.Sprintf("User %s was not created: %s", user.Username, err))
 		return err
 	}
 	return nil

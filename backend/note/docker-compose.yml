@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  database:
+
+volumes:
+  database_data:
+
+services:
+  note_app:
+    build:
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - database
+    ports:
+      - '8040:80'
+      - '8044:84'
+    depends_on:
+      - database
+    command:
+      - '-db-username=database_user'
+      - '-db-password=database_user_password'
+      - '-db-address=database:27017'
+  database:
+    image: mongodb/mongodb-community-server:7.0-ubuntu2204
+    restart: on-failure
+    networks:
+      - database
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'database_data:/data/db'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: database_user
+      MONGO_INITDB_ROOT_PASSWORD: database_user_password
+  swagger:
+    image: swaggerapi/swagger-ui:v5.17.7
+    restart: on-failure
+    ports:
+      - '8020:80'
+    depends_on:
+      - note_app
+    environment:
+      PORT: 80
+      URLS: >
+        [
+          { url: "http://localhost:8044/api/v1/note.openapi.yaml", name: "Note API" }
+        ]

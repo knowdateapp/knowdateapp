@@ -7,12 +7,14 @@ servers:
   - url: http://localhost:8040/api/v1
     description: Server for local development
 paths:
-  /notes:
+  /{workspace}/notes:
     get:
       description: This endpoint returns the user's notes.
       operationId: ListNotes
       tags:
         - notes
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       responses:
         '200':
           $ref: '#/components/responses/ListNotesResponse'
@@ -23,36 +25,55 @@ paths:
       operationId: CreateNote
       tags:
         - notes
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
       requestBody:
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/Note'
+        $ref: '#/components/requestBodies/CreateNoteRequest'
       responses:
         '201':
-          description: The note has been successfully created.
+          $ref: '#/components/responses/CreateNoteResponse'
         default:
           $ref: '#/components/responses/DefaultErrorResponse'
 components:
+  parameters:
+    Workspace:
+      description: This parameter defines the current workspace.
+      in: path
+      name: workspace
+      schema:
+        type: string
+      required: true
+
   schemas:
     Note:
       type: object
       required:
         - id
         - title
-        - owner_id
+        - workspace
       properties:
         id:
           type: string
-          format: uuid
           nullable: false
         title:
           type: string
           nullable: false
-        owner_id:
+        workspace:
           type: string
-          format: uuid
           nullable: false
+
+  requestBodies:
+    CreateNoteRequest:
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - title
+            properties:
+              title:
+                type: string
+                nullable: false
 
   responses:
     DefaultErrorResponse:
@@ -85,4 +106,17 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Note'
+                nullable: false
+
+    CreateNoteResponse:
+      description: The note has been successfully created.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
                 nullable: false
