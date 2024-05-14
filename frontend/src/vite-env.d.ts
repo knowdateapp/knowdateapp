@@ -1,9 +1,12 @@
 /// <reference types="vite/client" />
-/* eslint-disable @typescript-eslint/no-empty-interface */
 
-import '@emotion/react';
-import type { GlobalToken } from 'antd/es/theme/interface';
+import 'i18next';
+import translation from 'shared/config/i18n/locales/en/translation.json';
 
-declare module '@emotion/react' {
-  export interface Theme extends GlobalToken {}
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    resources: {
+      translation: typeof translation;
+    };
+  }
 }

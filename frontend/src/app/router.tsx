@@ -1,29 +1,25 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { CollectionPage } from 'pages/collection';
-import { KnowledgeBasePage } from 'pages/knowledge-base';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { AuthPage } from 'pages/auth';
 import { MainPage } from 'pages/main';
-import { TopicPage } from 'pages/topic';
+import { ProtectedRoute } from 'features/auth';
 import { Routes } from 'shared/config';
 
 export const router = createBrowserRouter([
   {
-    path: Routes.Main,
-    element: <MainPage />,
-  },
-  {
-    path: Routes.KnowledgeBase,
-    element: <KnowledgeBasePage />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: Routes.Collection,
-        element: <CollectionPage />,
-        children: [
-          {
-            path: Routes.Topic,
-            element: <TopicPage />,
-          },
-        ],
+        path: Routes.Main,
+        element: <MainPage />,
       },
     ],
+  },
+  {
+    path: Routes.Auth,
+    element: <AuthPage />,
+  },
+  {
+    path: '*',
+    element: <Navigate to={Routes.Main} />,
   },
 ]);

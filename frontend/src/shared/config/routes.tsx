@@ -1,6 +1,5 @@
+// TODO подумать о том что бы вынести enums в отдельную директорию или вообще из config
 export enum Routes {
   Main = '/',
-  KnowledgeBase = '/knowledge-base/:knowledgeBaseId',
-  Collection = 'collection/:collectionId',
-  Topic = 'topic/:topicNumber',
+  Auth = '/auth',
 }
