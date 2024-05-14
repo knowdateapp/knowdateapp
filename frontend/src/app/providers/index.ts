@@ -1,1 +1,1 @@
-export { EmotionThemeProvider } from './emotion-theme-provider.tsx';
+export { Providers } from './providers.tsx';
