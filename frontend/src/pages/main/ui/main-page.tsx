@@ -1,11 +1,6 @@
-import { Typography } from 'antd';
+import { Heading } from '@chakra-ui/react';
 import { FC } from 'react';
-import { Header, PageLayout } from 'shared/ui';
 
 export const MainPage: FC = () => {
-  return (
-    <PageLayout header={<Header />}>
-      <Typography>main page</Typography>
-    </PageLayout>
-  );
+  return <Heading>main page</Heading>;
 };

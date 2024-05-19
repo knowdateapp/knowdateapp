@@ -1,1 +1,0 @@
-export { KnowledgeBasePage } from './ui';
