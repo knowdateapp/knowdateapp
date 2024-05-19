@@ -1,0 +1,66 @@
+openapi: 3.0.3
+info:
+  title: Auth API
+  description: This API provides an interface for user authentication and token generation.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8030/api/v1
+    description: Server for local development.
+paths:
+  /login:
+    post:
+      description: This endpoint generates an auth token if user is authenticated.
+      operationId: Login
+      tags:
+        - auth
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  nullable: false
+                password:
+                  type: string
+                  nullable: false
+      responses:
+        '201':
+          $ref: '#/components/responses/LoginResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+components:
+  responses:
+    DefaultErrorResponse:
+      description: Default response model for response codes 4** and 5**.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                nullable: false
+              message:
+                type: string
+                nullable: false
+
+    LoginResponse:
+      description: The user has been successfully authenticated.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                type: string
+                nullable: false

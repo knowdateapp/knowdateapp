@@ -1,0 +1,6 @@
+package: user
+generate:
+  - types
+  - spec
+  - chi-server
+output: internal/api/http/v1/user/server.gen.go

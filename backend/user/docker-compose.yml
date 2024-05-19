@@ -1,0 +1,48 @@
+version: '3.8'
+
+networks:
+  user_app_network:
+
+volumes:
+  database_data:
+
+services:
+  user_app:
+    build:
+      dockerfile: ../build/Dockerfile
+    restart: on-failure
+    networks:
+      - user_app_network
+    ports:
+      - '8030:80'
+      - '8034:84'
+    depends_on:
+      - database
+    command:
+      - '-db-username=database_user'
+      - '-db-password=database_user_password'
+      - '-db-address=database:27017'
+  database:
+    image: mongodb/mongodb-community-server:7.0-ubuntu2204
+    restart: on-failure
+    networks:
+      - user_app_network
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'database_data:/data/db'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: database_user
+      MONGO_INITDB_ROOT_PASSWORD: database_user_password
+  swagger:
+    image: swaggerapi/swagger-ui:v5.17.7
+    restart: on-failure
+    networks:
+      - user_app_network
+    ports:
+      - '8020:80'
+    depends_on:
+      - user_app
+    environment:
+      PORT: 80
+      URLS: '[ { url: "http://localhost:8034/api/v1/user.openapi.yaml", name: "User API" }, { url: "http://localhost:8034/api/v1/auth.openapi.yaml", name: "Auth API" } ]'

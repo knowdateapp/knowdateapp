@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Note API
+  description: This API provides an interface for creating and managing notes.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8040/api/v1
+    description: Server for local development
+paths:
+  /notes:
+    get:
+      description: This endpoint returns the user's notes.
+      operationId: ListNotes
+      tags:
+        - notes
+      responses:
+        '200':
+          $ref: '#/components/responses/ListNotesResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+    post:
+      description: This endpoint creates a user's note.
+      operationId: CreateNote
+      tags:
+        - notes
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Note'
+      responses:
+        '201':
+          description: The note has been successfully created.
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+components:
+  schemas:
+    Note:
+      type: object
+      required:
+        - id
+        - title
+        - owner_id
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+        title:
+          type: string
+          nullable: false
+        owner_id:
+          type: string
+          format: uuid
+          nullable: false
+
+  responses:
+    DefaultErrorResponse:
+      description: Default response model for response codes 4** and 5**.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                nullable: false
+              message:
+                type: string
+                nullable: false
+
+    ListNotesResponse:
+      description: List of user notes.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - notes
+            properties:
+              notes:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+                nullable: false

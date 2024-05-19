@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: User API
+  description: This API provides an interface for creating and managing user information.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8030/api/v1
+    description: Server for local development.
+paths:
+  /users:
+    post:
+      description: This endpoint creates a user if it does not exists.
+      operationId: CreateUser
+      tags:
+        - users
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  nullable: false
+                password:
+                  type: string
+                  nullable: false
+      responses:
+        '201':
+          description: The user has been successfully created.
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+components:
+  responses:
+    DefaultErrorResponse:
+      description: Default response model for response codes 4** and 5**.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                nullable: false
+              message:
+                type: string
+                nullable: false
