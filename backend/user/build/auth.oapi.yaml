@@ -1,0 +1,6 @@
+package: auth
+generate:
+  - types
+  - spec
+  - chi-server
+output: internal/api/http/v1/auth/server.gen.go

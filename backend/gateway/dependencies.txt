@@ -1,8 +1,0 @@
-../knowledge/api/v1/common/knowledge_base.proto
-../knowledge/api/v1/common/collection.proto
-../knowledge/api/v1/common/topic.proto
-../knowledge/api/v1/knowledge_base/knowledge_base.proto
-../knowledge/api/v1/collection/collection.proto
-../knowledge/api/v1/topic/topic.proto
-../user/api/v1/auth/auth.proto
-../user/api/v1/user/user.proto

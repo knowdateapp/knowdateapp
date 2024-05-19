@@ -1,0 +1,6 @@
+package: note
+generate:
+  - types
+  - spec
+  - chi-server
+output: internal/api/http/v1/note/server.gen.go

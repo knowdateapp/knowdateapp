@@ -1,2 +1,1 @@
-*.pb.go -diff
-*.pb.gw.go -diff
+*.gen.go -diff
