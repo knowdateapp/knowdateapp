@@ -6,12 +6,14 @@ const defaultNS = 'translation';
 type DefaultNS = typeof defaultNS;
 
 export type TranslationKey = ParseKeys<DefaultNS, Record<string, string>, DefaultNS>;
-const loadNameSpace = (language: string, namespace: string) =>
-  `./locales/${language}/${namespace}.json`;
 
 void i18n
   .use(initReactI18next)
-  .use(resourcesToBackend(loadNameSpace))
+  .use(
+    resourcesToBackend(
+      (language: string, namespace: string) => import(`./locales/${language}/${namespace}.json`),
+    ),
+  )
   .init({
     defaultNS,
     fallbackLng: 'en',
