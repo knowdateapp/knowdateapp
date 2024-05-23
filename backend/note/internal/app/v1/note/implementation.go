@@ -8,7 +8,8 @@ import (
 )
 
 type Service interface {
-	Create(ctx context.Context, note *models.Note) (*models.Note, error)
+	Create(ctx context.Context, note *models.Note) (string, error)
+	GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error)
 }
 
 type Implementation struct {

@@ -7,15 +7,15 @@ volumes:
   database_data:
 
 services:
-  user_app:
+  note_app:
     build:
       dockerfile: ../build/Dockerfile
     restart: on-failure
     networks:
       - database
     ports:
-      - '8030:80'
-      - '8034:84'
+      - '8040:80'
+      - '8044:84'
     depends_on:
       - database
     command:
@@ -40,11 +40,10 @@ services:
     ports:
       - '8020:80'
     depends_on:
-      - user_app
+      - note_app
     environment:
       PORT: 80
       URLS: >
-        [ 
-          { url: "http://localhost:8034/api/v1/user.openapi.yaml", name: "User API" },
-          { url: "http://localhost:8034/api/v1/auth.openapi.yaml", name: "Auth API" }
+        [
+          { url: "http://localhost:8044/api/v1/note.openapi.yaml", name: "Note API" }
         ]

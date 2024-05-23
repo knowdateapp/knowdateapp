@@ -19,3 +19,13 @@ install-bin-deps:
 	$(info Installing binary dependencies...)
 
 	GOBIN=$(LOCAL_BIN) go install github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@v2.1.0
+
+.PHONY: docker-config
+docker-config:
+	docker compose \
+		--project-name knowdateapp \
+		--project-directory . \
+		--file ./note/docker-compose.yml \
+		--file ./user/docker-compose.yml \
+		--file ./docker-compose.override.yml \
+		config --output docker-compose.yml

@@ -15,12 +15,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	authdesc "github.com/knowdateapp/knowdateapp/backend/user/internal/api/http/v1/auth"
-	userdesc "github.com/knowdateapp/knowdateapp/backend/user/internal/api/http/v1/user"
-	authapp "github.com/knowdateapp/knowdateapp/backend/user/internal/app/v1/auth"
-	userapp "github.com/knowdateapp/knowdateapp/backend/user/internal/app/v1/user"
-	"github.com/knowdateapp/knowdateapp/backend/user/internal/domain/services"
-	"github.com/knowdateapp/knowdateapp/backend/user/internal/infrastructure/repositories"
+	notedesc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
+	noteapp "github.com/knowdateapp/knowdateapp/backend/note/internal/app/v1/note"
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/services"
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/infrastructure/repositories"
 )
 
 func main() {
@@ -76,25 +74,26 @@ func main() {
 		}
 	}()
 
+	var (
+		database   = "note"
+		collection = "notes"
+	)
+
 	// Check MongoDB connection status.
 	result := bson.M{}
-	err = db.Database("users").RunCommand(ctx, bson.D{{"ping", 1}}).Decode(&result)
+	err = db.Database(database).RunCommand(ctx, bson.D{{"ping", 1}}).Decode(&result)
 	if err != nil {
 		logger.Error("the connection to the database has not been established:", err)
 		os.Exit(1)
 	}
 
-	logger.Info(fmt.Sprintf("the connection to the database has been established: user=%s, address=%s", *dbUsername, *dbAddress))
-
 	// Services setup.
-	userRepository := repositories.NewUserRepository(db)
+	noteRepository := repositories.NewNoteRepository(db, database, collection)
 
-	userService := services.NewUserService(userRepository, logger)
-	authService := services.NewAuthService(userRepository, logger)
+	noteService := services.NewNoteService(noteRepository, logger)
 
 	// HTTP server setup.
-	userServer := userapp.NewUserServerImplementation(userService)
-	authServer := authapp.NewAuthServerImplementation(authService)
+	noteServer := noteapp.NewNoteServerImplementation(noteService)
 
 	corsHandler := cors.Handler(cors.Options{
 		AllowedOrigins: []string{"*"},
@@ -128,8 +127,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(corsHandler)
 
-	userdesc.RegisterUserServerHandler(router, userServer)
-	authdesc.RegisterAuthServerHandler(router, authServer)
+	notedesc.RegisterNoteServerHandler(router, noteServer)
 
 	logger.Info(fmt.Sprint("user server startup on port:", ServerAddress))
 
