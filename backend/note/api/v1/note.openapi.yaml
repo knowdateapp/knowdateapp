@@ -34,12 +34,38 @@ paths:
           $ref: '#/components/responses/CreateNoteResponse'
         default:
           $ref: '#/components/responses/DefaultErrorResponse'
+
+  /{workspace}/notes/{note-id}:
+    patch:
+      description: This endpoint updates the user's note. The body must contain note metadata and note file.
+      operationId: UpdateNote
+      tags:
+        - notes
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/NoteId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateNoteRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/UpdateNoteResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
 components:
   parameters:
     Workspace:
       description: This parameter defines the current workspace.
       in: path
       name: workspace
+      schema:
+        type: string
+      required: true
+
+    NoteId:
+      description: This parameter defines the current note id.
+      in: path
+      name: note-id
       schema:
         type: string
       required: true
@@ -51,16 +77,29 @@ components:
         - id
         - title
         - workspace
+        - content_uri
       properties:
         id:
           type: string
           nullable: false
         title:
           type: string
-          nullable: false
+          nullable: true
         workspace:
           type: string
           nullable: false
+        content_uri:
+          type: string
+          nullable: false
+
+    UpdateNotePart:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          nullable: true
 
   requestBodies:
     CreateNoteRequest:
@@ -73,7 +112,21 @@ components:
             properties:
               title:
                 type: string
-                nullable: false
+                nullable: true
+
+    UpdateNoteRequest:
+      content:
+        'multipart/form-data':
+          schema:
+            type: object
+            required:
+              - note
+            properties:
+              note:
+                $ref: '#/components/schemas/UpdateNotePart'
+              file:
+                type: string
+                format: binary
 
   responses:
     DefaultErrorResponse:
@@ -113,10 +166,11 @@ components:
       content:
         'application/json':
           schema:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                type: string
-                nullable: false
+            $ref: '#/components/schemas/Note'
+
+    UpdateNoteResponse:
+      description: The note has been successfully updated.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Note'

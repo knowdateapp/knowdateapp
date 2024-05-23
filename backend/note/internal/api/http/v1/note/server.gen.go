@@ -16,22 +16,30 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-chi/chi/v5"
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // Note defines model for Note.
 type Note struct {
-	Id        string `json:"id"`
-	Title     string `json:"title"`
-	Workspace string `json:"workspace"`
+	ContentUri string  `json:"content_uri"`
+	Id         string  `json:"id"`
+	Title      *string `json:"title"`
+	Workspace  string  `json:"workspace"`
 }
+
+// UpdateNotePart defines model for UpdateNotePart.
+type UpdateNotePart struct {
+	Title *string `json:"title"`
+}
+
+// NoteId defines model for NoteId.
+type NoteId = string
 
 // Workspace defines model for Workspace.
 type Workspace = string
 
 // CreateNoteResponse defines model for CreateNoteResponse.
-type CreateNoteResponse struct {
-	Id string `json:"id"`
-}
+type CreateNoteResponse = Note
 
 // DefaultErrorResponse defines model for DefaultErrorResponse.
 type DefaultErrorResponse struct {
@@ -44,18 +52,30 @@ type ListNotesResponse struct {
 	Notes []Note `json:"notes"`
 }
 
+// UpdateNoteResponse defines model for UpdateNoteResponse.
+type UpdateNoteResponse = Note
+
 // CreateNoteRequest defines model for CreateNoteRequest.
 type CreateNoteRequest struct {
-	Title string `json:"title"`
+	Title *string `json:"title"`
 }
 
 // CreateNoteJSONBody defines parameters for CreateNote.
 type CreateNoteJSONBody struct {
-	Title string `json:"title"`
+	Title *string `json:"title"`
+}
+
+// UpdateNoteMultipartBody defines parameters for UpdateNote.
+type UpdateNoteMultipartBody struct {
+	File *openapi_types.File `json:"file,omitempty"`
+	Note UpdateNotePart      `json:"note"`
 }
 
 // CreateNoteJSONRequestBody defines body for CreateNote for application/json ContentType.
 type CreateNoteJSONRequestBody CreateNoteJSONBody
+
+// UpdateNoteMultipartRequestBody defines body for UpdateNote for multipart/form-data ContentType.
+type UpdateNoteMultipartRequestBody UpdateNoteMultipartBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -65,6 +85,9 @@ type ServerInterface interface {
 
 	// (POST /{workspace}/notes)
 	CreateNote(w http.ResponseWriter, r *http.Request, workspace Workspace)
+
+	// (PATCH /{workspace}/notes/{note-id})
+	UpdateNote(w http.ResponseWriter, r *http.Request, workspace Workspace, noteId NoteId)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -78,6 +101,11 @@ func (_ Unimplemented) ListNotes(w http.ResponseWriter, r *http.Request, workspa
 
 // (POST /{workspace}/notes)
 func (_ Unimplemented) CreateNote(w http.ResponseWriter, r *http.Request, workspace Workspace) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// (PATCH /{workspace}/notes/{note-id})
+func (_ Unimplemented) UpdateNote(w http.ResponseWriter, r *http.Request, workspace Workspace, noteId NoteId) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -133,6 +161,41 @@ func (siw *ServerInterfaceWrapper) CreateNote(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateNote(w, r, workspace)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r.WithContext(ctx))
+}
+
+// UpdateNote operation middleware
+func (siw *ServerInterfaceWrapper) UpdateNote(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var err error
+
+	// ------------- Path parameter "workspace" -------------
+	var workspace Workspace
+
+	err = runtime.BindStyledParameterWithOptions("simple", "workspace", chi.URLParam(r, "workspace"), &workspace, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "workspace", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "note-id" -------------
+	var noteId NoteId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "note-id", chi.URLParam(r, "note-id"), &noteId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "note-id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateNote(w, r, workspace, noteId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -261,6 +324,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/{workspace}/notes", wrapper.CreateNote)
 	})
+	r.Group(func(r chi.Router) {
+		r.Patch(options.BaseURL+"/{workspace}/notes/{note-id}", wrapper.UpdateNote)
+	})
 
 	return r
 }
@@ -268,18 +334,21 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/7RVS4vbPhD/KmL+fygEEWe7Wyi+9XVYKKW0hR6WPWjlcaKtLamacUoI/u5FshO7tUMC",
-	"u735MZr5PWZGe9Cu9s6iZYJ8D14FVSNjSG/fXfhBXmmMLwWSDsazcRZy+LYxJI7RosDSWCTBGxS6CQEt",
-	"i1+H00uQYOIhr3gDEqyqEXI4/gcJAX82JmABOYcGJZDeYK1iWd75GEwcjF1D27ZdMBK/dYXBhPNdQMX4",
-	"yTF+6X7Fj9pZRpselfeV0SpCzx4p4t+PKvjgPAbuc7HhCucKj0He9WH38hDmHh5Rc8TXRZJ3lqbous9P",
-	"gGeK89hMMQtMTixEYR2j2CgSD4hWUKM1EpVNVe2ETrCLJbQS3mOpmoo/hODCM5DQrpiTWEKNRGp9gfwp",
-	"wxB/Cd2egzh4I2pXYCVKF4ZPMS2Jm8VCKFuIV4tFYv/REEf76BmoR8E7Ixnr9PB/wBJy+C8bJjHrTlMW",
-	"q0YEPTkVgtpNtOhSXiJBJCJcKRrCkKynZcrWl4toUsXLuk6enBU5mu1LuvWQaXxuno+xpTuxjN58vhU+",
-	"uK2JFiorjGUMpdKYLE7dbOw6GVsrq9bxpdfgyCTRj5lAwhYDdemvlqvlKrJyHq3yBnK4Xq6W1yDTRksK",
-	"Zfsj9DY7mrxGPoEWbeGdsbEduQm225zRlxc0oIoWpLa6LXr3UhumusOevpvvoSEkG/Z4e//Xcnq5Wp1q",
-	"wmNcNh2A1Fppns6fnl0e0UxWaxo1cCvBOzorWLeXSKixXFO1hq37ZLkOt83uNNfRhZRNb6N2IvrVedlm",
-	"ro1/onpaABi2B3H+1P5r+pNGqHJaVaLALVbO13H3SWhCBTlsmH2eZSlg44jz16ubVaa8ybZX0N63vwMA",
-	"AP//89gfA2YIAAA=",
+	"H4sIAAAAAAAC/8xWTYvjRhD9K00lEBi0lie7gaBbvg4LISz5IIdlCGV1ye6N1N3pLjkYo/8eqmVLmpE8",
+	"np3NwN7kVqn96r2qV3WE0jXeWbIcoTiCx4ANMYX06xfH9FbLk6ZYBuPZOAsF/L4zUQ2hSlNlLEXFO1Jl",
+	"GwJZVtYxKaNXkIGRTzzyDjKw2BAUIG9fGQ0ZBPqnNYE0FBxayiCWO2pQ/pIPXkIjB2O30HUZ/OnC39Fj",
+	"Sc9C9O/56wuYhvcfharrgyny904bSrT9EAiZhLxf+1dyWDrLZNMjel+bEgV6/iEK/uPkH3xwngKf7mLD",
+	"dcrXtnWNG3nuIc3pGUG/P312N4S5zQcqWfB2Gfzh9aP4mrZm4zFwXrnQvNLI+BjEyvQIJRgZCtgYi+EA",
+	"M4xZ0l1CvwxUQQFf5GP15f31MR/RvcPAs8zSFYuJpcDonY1zGfrjj9LhMYxyaS/+wzKkvvJ3GNWGyKrY",
+	"liXFWLV1fVBlQqRXQsWPVGFb808huPAsfPdFKJ2mhfrMoKEYcUvLHTUlNt0wxi9R/DDdUw7qTLtqnKZa",
+	"VS6MR3JtVG9ubhRarb65uUnZ/2wiC4nxf0hdCE8PhqmJT5NuSA5DwMNikcUnUSCJKFepNlJI0seU37TF",
+	"Po/aaxMiqb3u7GeDxy+VU0L6VxvMYlUZvXj8VLfKJm57tTDTnOhvzu659BTkXKupCMlJXt5bZa5U7sJ0",
+	"+u7dW+WD2xvpB7TKWKZQYUmpX5I1GLtNXdKgxa38OBXUQGxSS26CDPYUYn/97Wq9WkvCzpNFb6CA16v1",
+	"6jVkacSlXPPjwFyXDx2zJb6Alqz2zljpbW6D7UepFPlXcUQlZKYSliVh7On0v+Me8X65nseQfBzs3d0D",
+	"E/96vb7UEENcPneT1B3JnK5/vejEIibjNk7coMvAu3iVsN7ko8IpXXO2xun0yXSd14/D5VwnG0o+X0+6",
+	"Gem312lbGK8vwnqXLRRvfjytkF2/tXK5u6ZLb4CzQl4pMc6N0wfVtJGVmAoa21tpQ4yy/qSuTCey7MzF",
+	"HJ3mU8TMrgafFvJnyT7f+p4l+8JkexnZZUxR2J9pvC/tb+lNcs7alVgrTXuqnW9kvGbQhhoK2DH7Is9T",
+	"wM5FLr5dv1nn6E2+v4XurvsvAAD//1pemiL9DAAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
