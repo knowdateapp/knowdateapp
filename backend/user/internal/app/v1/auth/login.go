@@ -33,6 +33,7 @@ func (i *Implementation) Login(w http.ResponseWriter, r *http.Request) {
 			Message: "invalid body",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
 	ctx, cancel := context.WithCancel(r.Context())
@@ -47,6 +48,7 @@ func (i *Implementation) Login(w http.ResponseWriter, r *http.Request) {
 			Message: "user unauthorized",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
 	response := &desc.LoginResponse{

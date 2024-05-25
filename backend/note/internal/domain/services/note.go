@@ -25,13 +25,21 @@ func NewNoteService(repository NoteRepository, logger *slog.Logger) *NoteService
 	}
 }
 
-func (s *NoteService) Create(ctx context.Context, note *models.Note) (string, error) {
+func (s *NoteService) Create(ctx context.Context, note *models.Note) (*models.Note, error) {
 	id, err := s.repository.Create(ctx, note)
 	if err != nil {
 		s.logger.Error(fmt.Sprintf("note was not created: %s", err))
-		return "", err
+		return nil, err
 	}
-	return id, nil
+
+	// TODO: Add default content uri.
+	result := &models.Note{
+		ID:         id,
+		Title:      note.Title,
+		Workspace:  note.Workspace,
+		ContentUri: note.ContentUri,
+	}
+	return result, nil
 }
 
 func (s *NoteService) GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error) {

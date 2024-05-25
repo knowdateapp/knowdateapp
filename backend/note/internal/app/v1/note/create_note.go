@@ -13,7 +13,7 @@ import (
 func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, workspace desc.Workspace) {
 	w.Header().Add("Content-Type", mime.TypeByExtension(".json"))
 
-	request := desc.CreateNoteJSONBody{}
+	request := desc.CreateNoteJSONRequestBody{}
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		resp := desc.DefaultErrorResponse{
@@ -22,12 +22,13 @@ func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, work
 			Message: "invalid body",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
-	id, err := i.service.Create(ctx, &models.Note{
+	note, err := i.service.Create(ctx, &models.Note{
 		Title:     request.Title,
 		Workspace: workspace,
 	})
@@ -39,10 +40,14 @@ func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, work
 			Message: "note was not created",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
 	response := &desc.CreateNoteResponse{
-		Id: id,
+		Id:         note.ID,
+		Title:      note.Title,
+		Workspace:  note.Workspace,
+		ContentUri: note.ContentUri,
 	}
 
 	w.WriteHeader(http.StatusCreated)

@@ -24,6 +24,7 @@ func (i *Implementation) ListNotes(w http.ResponseWriter, r *http.Request, works
 			Message: "can not get notes by workspace",
 		}
 		_ = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
 	response := desc.ListNotesResponse{
@@ -32,9 +33,10 @@ func (i *Implementation) ListNotes(w http.ResponseWriter, r *http.Request, works
 
 	for _, note := range notes {
 		response.Notes = append(response.Notes, desc.Note{
-			Id:        note.ID,
-			Title:     note.Title,
-			Workspace: note.Workspace,
+			Id:         note.ID,
+			Title:      note.Title,
+			Workspace:  note.Workspace,
+			ContentUri: note.ContentUri,
 		})
 	}
 
