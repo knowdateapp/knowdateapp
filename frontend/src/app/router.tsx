@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AuthPage } from 'pages/auth';
-import { MainPage } from 'pages/main';
+import { NotesPage } from 'pages/notes';
 import { ProtectedRoute } from 'features/auth';
 import { Routes } from 'shared/config';
 
@@ -9,8 +9,8 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: Routes.Main,
-        element: <MainPage />,
+        path: Routes.Notes,
+        element: <NotesPage />,
       },
     ],
   },
@@ -20,6 +20,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to={Routes.Main} />,
+    element: <Navigate to={Routes.Notes} />,
   },
 ]);

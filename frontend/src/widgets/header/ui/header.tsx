@@ -1,6 +1,7 @@
 import { Flex, Heading } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
-import { AuthButton, useAuth } from 'features/auth';
+import { AuthButton } from 'features/auth';
+import { useAuth } from 'entities/session';
 
 export const Header: FC = () => {
   const { isAuth } = useAuth();
