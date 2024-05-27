@@ -14,6 +14,7 @@ import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
+import { useAuth } from 'entities/session';
 import { TranslationKey } from 'shared/config';
 import { isAlphaNumeric } from 'shared/lib';
 import {
@@ -21,7 +22,6 @@ import {
   MAX_USERNAME_LENGTH,
   MIN_PASSWORD_LENGTH,
   MIN_USERNAME_LENGTH,
-  useAuth,
 } from '../../model';
 
 const schema = z.object({
@@ -44,14 +44,14 @@ type FormFields = z.infer<typeof schema>;
 
 export const AuthForm: FC = () => {
   const { t } = useTranslation('translation');
-  const { setAuth } = useAuth();
+  const { setWorkspace } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
-  const onSubmit: SubmitHandler<FormFields> = () => setAuth(true);
+  const onSubmit: SubmitHandler<FormFields> = ({ username }) => setWorkspace(username);
 
   return (
     <chakra.form minW="xl" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>

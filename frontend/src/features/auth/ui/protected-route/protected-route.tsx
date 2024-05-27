@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from 'entities/session';
 import { Routes } from 'shared/config';
-import { useAuth } from '../../model';
 
 export const ProtectedRoute: FC = () => {
   const { isAuth } = useAuth();

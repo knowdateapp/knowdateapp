@@ -1,13 +1,17 @@
 import { createContext } from 'react';
 
+export type Workspace = string | null;
+
 export interface IAuthContext {
   isAuth: boolean;
-  setAuth: (value: boolean) => void;
+  setWorkspace: (value: Workspace) => void;
+  workspace: Workspace;
 }
-// TODO если контекст понадобится в других фичах перенести его в "entities/session"
+
 export const AuthContext = createContext<IAuthContext>({
   isAuth: false,
-  setAuth: () => {
+  workspace: '',
+  setWorkspace: () => {
     return;
   },
 });
