@@ -6,6 +6,7 @@ import (
 	"mime"
 	"net/http"
 
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/code"
 	desc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
 )
 
@@ -18,12 +19,8 @@ func (i *Implementation) ListNotes(w http.ResponseWriter, r *http.Request, works
 	notes, err := i.service.GetByWorkspace(ctx, workspace)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		resp := desc.DefaultErrorResponse{
-			// TODO: make it constant
-			Code:    "unexpected-error",
-			Message: "can not get notes by workspace",
-		}
-		_ = json.NewEncoder(w).Encode(resp)
+		body := desc.NewDefaultErrorResponse(code.UnexpectedError, "can not get notes by workspace")
+		_ = json.NewEncoder(w).Encode(&body)
 		return
 	}
 

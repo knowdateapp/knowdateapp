@@ -41,6 +41,16 @@ func (r *NoteRepository) Create(ctx context.Context, note *models.Note) (string,
 	return id.Hex(), nil
 }
 
+func (r *NoteRepository) Update(ctx context.Context, note *models.Note) error {
+	// TODO: implement
+	return nil
+}
+
+func (r *NoteRepository) Get(ctx context.Context, workspace string, ID string) (*models.Note, error) {
+	// TODO: implement
+	return nil, nil
+}
+
 func (r *NoteRepository) GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error) {
 	result, err := r.db.Database(r.database).
 		Collection(r.collection).

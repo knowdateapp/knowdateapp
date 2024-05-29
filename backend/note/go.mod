@@ -3,6 +3,7 @@ module github.com/knowdateapp/knowdateapp/backend/note
 go 1.22.3
 
 require (
+	github.com/deepmap/oapi-codegen/v2 v2.1.0
 	github.com/getkin/kin-openapi v0.124.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/go-chi/cors v1.2.1

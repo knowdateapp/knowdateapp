@@ -2,14 +2,17 @@ package note
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"mime"
+	"mime/multipart"
 	"net/http"
-	"os"
-	"path"
 
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/code"
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/common"
 	desc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/models"
 )
 
 func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, workspace desc.Workspace, noteId desc.NoteId) {
@@ -18,12 +21,8 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 	reader, err := r.MultipartReader()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		resp := desc.DefaultErrorResponse{
-			// TODO: make it constant
-			Code:    "request-type-error",
-			Message: "invalid body",
-		}
-		_ = json.NewEncoder(w).Encode(resp)
+		body := desc.NewDefaultErrorResponse(code.RequestTypeError, "failed to decode request: %s", err)
+		_ = json.NewEncoder(w).Encode(&body)
 		return
 	}
 
@@ -32,82 +31,72 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 		fileField = "file"
 	)
 
+	var (
+		notePart = desc.UpdateNotePart{}
+		file     = bytes.NewBuffer(make([]byte, 0, 4048))
+		filename = ""
+	)
+
 	for {
-		part, err := reader.NextPart()
+		var part *multipart.Part
+		part, err = reader.NextPart()
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
 			w.WriteHeader(http.StatusBadRequest)
-			resp := desc.DefaultErrorResponse{
-				// TODO: make it constant
-				Code:    "request-type-error",
-				Message: "invalid body",
-			}
-			_ = json.NewEncoder(w).Encode(resp)
+			body := desc.NewDefaultErrorResponse(code.RequestTypeError, "failed to decode multipart request: %s", err)
+			_ = json.NewEncoder(w).Encode(&body)
 			return
 		}
 
 		switch part.FormName() {
 		case noteField:
-			note := desc.UpdateNotePart{}
-			err = json.NewDecoder(part).Decode(&note)
+			err = common.DecodeJsonMultipart(part, &notePart)
 			if err != nil {
 				w.WriteHeader(http.StatusBadRequest)
-				resp := desc.DefaultErrorResponse{
-					// TODO: make it constant
-					Code:    "request-type-error",
-					Message: "invalid body",
-				}
-				_ = json.NewEncoder(w).Encode(resp)
+				body := desc.NewDefaultErrorResponse(code.RequestTypeError, "failed to decode note field: %s", err)
+				_ = json.NewEncoder(w).Encode(&body)
+				_ = part.Close()
 				return
 			}
 		case fileField:
-			file := bytes.NewBuffer(nil)
-			file.Grow(4048)
+			filename = part.FileName()
 			_, err = file.ReadFrom(part)
 			if err != nil {
-				// TODO: use internal server error
-				w.WriteHeader(http.StatusBadRequest)
-				resp := desc.DefaultErrorResponse{
-					// TODO: make it constant
-					Code:    "request-type-error",
-					Message: "invalid body",
-				}
-				_ = json.NewEncoder(w).Encode(resp)
+				w.WriteHeader(http.StatusInternalServerError)
+				body := desc.NewDefaultErrorResponse(code.UnexpectedError, "failed to decode file field: %s", err)
+				_ = json.NewEncoder(w).Encode(&body)
+				_ = part.Close()
 				return
 			}
-			name := path.Join(".", part.FileName())
-			f, err := os.OpenFile(name, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0766)
-			if err != nil {
-				// TODO: use internal server error
-				w.WriteHeader(http.StatusBadRequest)
-				resp := desc.DefaultErrorResponse{
-					// TODO: make it constant
-					Code:    "request-type-error",
-					Message: "invalid body",
-				}
-				_ = json.NewEncoder(w).Encode(resp)
-				return
-			}
-			_, err = file.WriteTo(f)
-			if err != nil {
-				// TODO: use internal server error
-				w.WriteHeader(http.StatusBadRequest)
-				resp := desc.DefaultErrorResponse{
-					// TODO: make it constant
-					Code:    "request-type-error",
-					Message: "invalid body",
-				}
-				_ = json.NewEncoder(w).Encode(resp)
-				return
-			}
-			_ = f.Close()
 		}
 
 		_ = part.Close()
 	}
 
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
+
+	note, err := i.service.Update(ctx, &models.Note{
+		ID:        noteId,
+		Title:     notePart.Title,
+		Workspace: workspace,
+	}, filename, file)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body := desc.NewDefaultErrorResponse(code.NotUpdatedError, "note was not updated: %s", err)
+		_ = json.NewEncoder(w).Encode(&body)
+		return
+	}
+
+	response := &desc.UpdateNoteResponse{
+		Id:         note.ID,
+		Title:      note.Title,
+		Workspace:  note.Workspace,
+		ContentUri: note.ContentUri,
+	}
+
 	w.WriteHeader(http.StatusOK)
-	// TODO: send an answer
+	_ = json.NewEncoder(w).Encode(response)
 }

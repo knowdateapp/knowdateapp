@@ -6,6 +6,8 @@ import (
 	"mime"
 	"net/http"
 
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/code"
+	"github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/common"
 	desc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
 	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/models"
 )
@@ -14,14 +16,11 @@ func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, work
 	w.Header().Add("Content-Type", mime.TypeByExtension(".json"))
 
 	request := desc.CreateNoteJSONRequestBody{}
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+	err := common.DecodeJsonRequest(r, &request)
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		resp := desc.DefaultErrorResponse{
-			// TODO: make it constant
-			Code:    "request-type-error",
-			Message: "invalid body",
-		}
-		_ = json.NewEncoder(w).Encode(resp)
+		body := desc.NewDefaultErrorResponse(code.RequestTypeError, "failed to decode request: %s", err)
+		_ = json.NewEncoder(w).Encode(&body)
 		return
 	}
 
@@ -34,12 +33,8 @@ func (i *Implementation) CreateNote(w http.ResponseWriter, r *http.Request, work
 	})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		resp := desc.DefaultErrorResponse{
-			// TODO: make it constant
-			Code:    "not-created",
-			Message: "note was not created",
-		}
-		_ = json.NewEncoder(w).Encode(resp)
+		body := desc.NewDefaultErrorResponse(code.NotCreatedError, "note was not created: %s", err)
+		_ = json.NewEncoder(w).Encode(&body)
 		return
 	}
 

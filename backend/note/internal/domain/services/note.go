@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log/slog"
@@ -10,6 +11,8 @@ import (
 
 type NoteRepository interface {
 	Create(ctx context.Context, note *models.Note) (string, error)
+	Update(ctx context.Context, note *models.Note) error
+	Get(ctx context.Context, workspace string, ID string) (*models.Note, error)
 	GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error)
 }
 
@@ -40,6 +43,11 @@ func (s *NoteService) Create(ctx context.Context, note *models.Note) (*models.No
 		ContentUri: note.ContentUri,
 	}
 	return result, nil
+}
+
+func (s *NoteService) Update(ctx context.Context, note *models.Note, filename string, file *bytes.Buffer) (*models.Note, error) {
+	// TODO: implement
+	return nil, nil
 }
 
 func (s *NoteService) GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error) {
