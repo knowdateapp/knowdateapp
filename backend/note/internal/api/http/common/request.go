@@ -18,8 +18,11 @@ func DecodeJsonRequest[T any](r *http.Request, result *T) error {
 }
 
 func DecodeJsonMultipart[T any](part *multipart.Part, result *T) error {
-	if err := isMediaTypeJson(part.Header.Get("Content-Type")); err != nil {
-		return err
+	mediaType := part.Header.Get("Content-Type")
+	if len(mediaType) > 0 {
+		if err := isMediaTypeJson(mediaType); err != nil {
+			return err
+		}
 	}
 
 	return json.NewDecoder(part).Decode(result)

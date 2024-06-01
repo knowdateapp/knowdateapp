@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/google/uuid"
+
 	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/models"
 )
 
@@ -16,14 +18,20 @@ type NoteRepository interface {
 	GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error)
 }
 
+type NoteStorage interface {
+	Put(ctx context.Context, key string, content *bytes.Buffer) error
+}
+
 type NoteService struct {
 	repository NoteRepository
+	storage    NoteStorage
 	logger     *slog.Logger
 }
 
-func NewNoteService(repository NoteRepository, logger *slog.Logger) *NoteService {
+func NewNoteService(repository NoteRepository, storage NoteStorage, logger *slog.Logger) *NoteService {
 	return &NoteService{
 		repository: repository,
+		storage:    storage,
 		logger:     logger,
 	}
 }
@@ -45,9 +53,34 @@ func (s *NoteService) Create(ctx context.Context, note *models.Note) (*models.No
 	return result, nil
 }
 
-func (s *NoteService) Update(ctx context.Context, note *models.Note, filename string, file *bytes.Buffer) (*models.Note, error) {
-	// TODO: implement
-	return nil, nil
+func (s *NoteService) Update(ctx context.Context, note *models.Note, file *bytes.Buffer) (*models.Note, error) {
+	key := ""
+	if file != nil {
+		key = uuid.New().String()
+		err := s.storage.Put(ctx, key, file)
+		if err != nil {
+			s.logger.Error(fmt.Sprintf("note %s file not saved: %s", note.ID, err))
+			return nil, err
+		}
+	}
+
+	n, err := s.repository.Get(ctx, note.Workspace, note.ID)
+	if err != nil {
+		s.logger.Error(fmt.Sprintf("note was not updated: %s", err))
+		return nil, err
+	}
+
+	n.Title = note.Title
+	// TODO: use returned uri to download file
+	n.ContentUri = key
+
+	err = s.repository.Update(ctx, n)
+	if err != nil {
+		s.logger.Error(fmt.Sprintf("note was not updated: %s", err))
+		return nil, err
+	}
+
+	return n, nil
 }
 
 func (s *NoteService) GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error) {

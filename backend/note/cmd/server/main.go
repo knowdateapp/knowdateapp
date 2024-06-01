@@ -29,9 +29,10 @@ func main() {
 
 	// App configuration.
 	var (
-		dbUsername = flag.String("db-username", "admin", "username to connect to the database")
-		dbPassword = flag.String("db-password", "password", "password to connect to the database")
-		dbAddress  = flag.String("db-address", "localhost:27017", "database host and port")
+		dbUsername  = flag.String("db-username", "admin", "username to connect to the database")
+		dbPassword  = flag.String("db-password", "password", "password to connect to the database")
+		dbAddress   = flag.String("db-address", "localhost:27017", "database host and port")
+		storagePath = flag.String("storage-path", "storage", "service storage path")
 	)
 
 	flag.Parse()
@@ -89,8 +90,9 @@ func main() {
 
 	// Services setup.
 	noteRepository := repositories.NewNoteRepository(db, database, collection)
+	noteStorage := repositories.NewNoteStorageFile(*storagePath)
 
-	noteService := services.NewNoteService(noteRepository, logger)
+	noteService := services.NewNoteService(noteRepository, noteStorage, logger)
 
 	// HTTP server setup.
 	noteServer := noteapp.NewNoteServerImplementation(noteService)

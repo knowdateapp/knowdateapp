@@ -4,6 +4,7 @@ networks:
   database:
 
 volumes:
+  storage:
   database_data:
 
 services:
@@ -18,10 +19,13 @@ services:
       - '8044:84'
     depends_on:
       - database
+    volumes:
+      - storage:/app/storage
     command:
       - '-db-username=database_user'
       - '-db-password=database_user_password'
       - '-db-address=database:27017'
+      - '-storage-path=/app/storage'
   database:
     image: mongodb/mongodb-community-server:7.0-ubuntu2204
     restart: on-failure

@@ -42,13 +42,44 @@ func (r *NoteRepository) Create(ctx context.Context, note *models.Note) (string,
 }
 
 func (r *NoteRepository) Update(ctx context.Context, note *models.Note) error {
-	// TODO: implement
+	objectID, err := primitive.ObjectIDFromHex(note.ID)
+	if err != nil {
+		return fmt.Errorf("failed to parse object id %s: %s", note.ID, err)
+	}
+
+	update := bson.D{{"$set", bson.D{{"title", note.Title}, {"content_uri", note.ContentUri}}}}
+
+	result, err := r.db.Database(r.database).
+		Collection(r.collection).
+		UpdateByID(ctx, objectID, update)
+	if err != nil {
+		return fmt.Errorf("failed to update note: %s", err)
+	}
+
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("failed to update note: not found")
+	}
+
 	return nil
 }
 
 func (r *NoteRepository) Get(ctx context.Context, workspace string, ID string) (*models.Note, error) {
-	// TODO: implement
-	return nil, nil
+	objectID, err := primitive.ObjectIDFromHex(ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse object id %s: %s", ID, err)
+	}
+
+	result := r.db.Database(r.database).
+		Collection(r.collection).
+		FindOne(ctx, bson.D{{"_id", objectID}, {"workspace", workspace}})
+
+	note := &models.Note{}
+	err = result.Decode(&note)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find not by id: %s", err)
+	}
+
+	return note, nil
 }
 
 func (r *NoteRepository) GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error) {

@@ -21,6 +21,8 @@ LABEL maintainer="meetmorrowsolonmars@gmail.com"
 
 WORKDIR /app
 
+RUN mkdir /app/storage
+
 # application server port
 EXPOSE 80/tcp
 

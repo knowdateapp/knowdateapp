@@ -32,9 +32,8 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 	)
 
 	var (
-		notePart = desc.UpdateNotePart{}
-		file     = bytes.NewBuffer(make([]byte, 0, 4048))
-		filename = ""
+		notePart desc.UpdateNotePart
+		file     *bytes.Buffer
 	)
 
 	for {
@@ -61,14 +60,19 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 				return
 			}
 		case fileField:
-			filename = part.FileName()
-			_, err = file.ReadFrom(part)
+			file = bytes.NewBuffer(make([]byte, 0, 4048))
+			n := int64(0)
+
+			n, err = file.ReadFrom(part)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				body := desc.NewDefaultErrorResponse(code.UnexpectedError, "failed to decode file field: %s", err)
 				_ = json.NewEncoder(w).Encode(&body)
 				_ = part.Close()
 				return
+			}
+			if n == 0 {
+				file = nil
 			}
 		}
 
@@ -82,7 +86,7 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 		ID:        noteId,
 		Title:     notePart.Title,
 		Workspace: workspace,
-	}, filename, file)
+	}, file)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body := desc.NewDefaultErrorResponse(code.NotUpdatedError, "note was not updated: %s", err)
