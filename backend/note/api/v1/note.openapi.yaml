@@ -4,8 +4,8 @@ info:
   description: This API provides an interface for creating and managing notes.
   version: 1.0.0
 servers:
-  - url: http://localhost:8040/api/v1
-    description: Server for local development
+  - url: http://localhost:8010/api/note/v1
+    description: Server for local development.
 paths:
   /{workspace}/notes:
     get:

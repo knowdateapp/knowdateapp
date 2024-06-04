@@ -4,7 +4,7 @@ info:
   description: This API provides an interface for creating and managing user information.
   version: 1.0.0
 servers:
-  - url: http://localhost:8030/api/v1
+  - url: http://localhost:8010/api/user/v1
     description: Server for local development.
 paths:
   /users:

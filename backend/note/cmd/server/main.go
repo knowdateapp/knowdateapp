@@ -25,6 +25,7 @@ func main() {
 	const (
 		ServerAddress      = ":80"
 		DebugServerAddress = ":84"
+		BaseURL            = "/api/note/v1"
 	)
 
 	// App configuration.
@@ -115,9 +116,9 @@ func main() {
 	go func() {
 		debugRouter := chi.NewRouter()
 		debugRouter.Use(corsHandler)
-		debugRouter.Handle("/api/v1/*", http.StripPrefix("/api/v1/", http.FileServer(http.Dir("./api/v1/"))))
+		debugRouter.Handle(BaseURL+"/*", http.StripPrefix(BaseURL+"/", http.FileServer(http.Dir("./api/v1/"))))
 
-		logger.Info(fmt.Sprint("start debug service on port:", DebugServerAddress))
+		logger.Info(fmt.Sprint("start note debug service on port:", DebugServerAddress))
 
 		if dErr := http.ListenAndServe(DebugServerAddress, debugRouter); dErr != nil {
 			logger.Error(fmt.Sprint("can not run debug application:", dErr))
@@ -129,9 +130,9 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(corsHandler)
 
-	notedesc.RegisterNoteServerHandler(router, noteServer)
+	notedesc.RegisterNoteServerHandler(router, noteServer, BaseURL)
 
-	logger.Info(fmt.Sprint("user server startup on port:", ServerAddress))
+	logger.Info(fmt.Sprint("note server startup on port:", ServerAddress))
 
 	if err = http.ListenAndServe(ServerAddress, router); err != nil {
 		logger.Error(fmt.Sprint("can not run application:", err))

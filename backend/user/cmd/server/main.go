@@ -27,6 +27,7 @@ func main() {
 	const (
 		ServerAddress      = ":80"
 		DebugServerAddress = ":84"
+		BaseURL            = "/api/user/v1"
 	)
 
 	// App configuration.
@@ -114,9 +115,9 @@ func main() {
 	go func() {
 		debugRouter := chi.NewRouter()
 		debugRouter.Use(corsHandler)
-		debugRouter.Handle("/api/v1/*", http.StripPrefix("/api/v1/", http.FileServer(http.Dir("./api/v1/"))))
+		debugRouter.Handle(BaseURL+"/*", http.StripPrefix(BaseURL+"/", http.FileServer(http.Dir("./api/v1/"))))
 
-		logger.Info(fmt.Sprint("start debug service on port:", DebugServerAddress))
+		logger.Info(fmt.Sprint("start user debug service on port:", DebugServerAddress))
 
 		if dErr := http.ListenAndServe(DebugServerAddress, debugRouter); dErr != nil {
 			logger.Error(fmt.Sprint("can not run debug application:", dErr))
@@ -128,8 +129,8 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(corsHandler)
 
-	userdesc.RegisterUserServerHandler(router, userServer)
-	authdesc.RegisterAuthServerHandler(router, authServer)
+	userdesc.RegisterUserServerHandler(router, userServer, BaseURL)
+	authdesc.RegisterAuthServerHandler(router, authServer, BaseURL)
 
 	logger.Info(fmt.Sprint("user server startup on port:", ServerAddress))
 

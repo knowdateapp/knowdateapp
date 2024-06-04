@@ -1,6 +1,8 @@
 version: '3.8'
 
 networks:
+  reverse_proxy_note:
+  swagger:
   database:
 
 volumes:
@@ -13,10 +15,8 @@ services:
       dockerfile: ../build/Dockerfile
     restart: on-failure
     networks:
+      - reverse_proxy_note
       - database
-    ports:
-      - '8040:80'
-      - '8044:84'
     depends_on:
       - database
     volumes:
@@ -41,13 +41,26 @@ services:
   swagger:
     image: swaggerapi/swagger-ui:v5.17.7
     restart: on-failure
-    ports:
-      - '8020:80'
-    depends_on:
-      - note_app
+    networks:
+      - swagger
     environment:
       PORT: 80
       URLS: >
         [
-          { url: "http://localhost:8044/api/v1/note.openapi.yaml", name: "Note API" }
+          { url: "http://localhost:8014/api/note/v1/note.openapi.yaml", name: "Note API" }
         ]
+  nginx:
+    image: nginx:1.27.0
+    restart: on-failure
+    networks:
+      - swagger
+      - reverse_proxy_note
+    ports:
+      - '8010:80'
+      - '8014:84'
+    volumes:
+      - '../deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - '../deploy/nginx/conf.d:/etc/nginx/conf.d:ro'
+    depends_on:
+      - note_app
+      - swagger
