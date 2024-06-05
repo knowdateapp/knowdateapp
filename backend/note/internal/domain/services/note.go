@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"path/filepath"
+	"strings"
 
 	"github.com/google/uuid"
 
@@ -53,10 +55,11 @@ func (s *NoteService) Create(ctx context.Context, note *models.Note) (*models.No
 	return result, nil
 }
 
-func (s *NoteService) Update(ctx context.Context, note *models.Note, file *bytes.Buffer) (*models.Note, error) {
+func (s *NoteService) Update(ctx context.Context, note *models.Note, filename string, file *bytes.Buffer) (*models.Note, error) {
 	key := ""
 	if file != nil {
 		key = uuid.New().String()
+		key = strings.Join([]string{key, filepath.Ext(filename)}, "")
 		err := s.storage.Put(ctx, key, file)
 		if err != nil {
 			s.logger.Error(fmt.Sprintf("note %s file not saved: %s", note.ID, err))
@@ -71,7 +74,6 @@ func (s *NoteService) Update(ctx context.Context, note *models.Note, file *bytes
 	}
 
 	n.Title = note.Title
-	// TODO: use returned uri to download file
 	n.ContentUri = key
 
 	err = s.repository.Update(ctx, n)

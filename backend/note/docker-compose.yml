@@ -61,6 +61,7 @@ services:
     volumes:
       - '../deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
       - '../deploy/nginx/conf.d:/etc/nginx/conf.d:ro'
+      - 'storage:/usr/share/nginx/note_storage:ro'
     depends_on:
       - note_app
       - swagger

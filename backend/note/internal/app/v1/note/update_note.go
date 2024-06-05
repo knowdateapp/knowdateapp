@@ -34,6 +34,7 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 	var (
 		notePart desc.UpdateNotePart
 		file     *bytes.Buffer
+		filename string
 	)
 
 	for {
@@ -62,6 +63,7 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 		case fileField:
 			file = bytes.NewBuffer(make([]byte, 0, 4048))
 			n := int64(0)
+			filename = part.FileName()
 
 			n, err = file.ReadFrom(part)
 			if err != nil {
@@ -86,7 +88,7 @@ func (i *Implementation) UpdateNote(w http.ResponseWriter, r *http.Request, work
 		ID:        noteId,
 		Title:     notePart.Title,
 		Workspace: workspace,
-	}, file)
+	}, filename, file)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body := desc.NewDefaultErrorResponse(code.NotUpdatedError, "note was not updated: %s", err)
