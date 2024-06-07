@@ -1,6 +1,5 @@
 import { createContext } from 'react';
-
-export type Workspace = string | null;
+import { Workspace } from 'shared/model';
 
 export interface IAuthContext {
   isAuth: boolean;
