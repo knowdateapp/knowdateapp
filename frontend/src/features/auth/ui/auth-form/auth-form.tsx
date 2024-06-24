@@ -55,7 +55,7 @@ export const AuthForm: FC = () => {
 
   return (
     <chakra.form minW="xl" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
-      <Heading>{t('features.auth.auth-form.title')}</Heading>
+      <Heading>{t('features.auth.authForm.title')}</Heading>
       <Stack mt={10} borderColor="gray.200" position="relative">
         <Stack spacing={10} zIndex={4} backgroundColor="white" p={12} mx={4} borderRadius="2xl">
           <FormControl isInvalid={Boolean(errors.username)}>

@@ -5,7 +5,9 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: ({ queryKey, meta }) =>
-        apiClient.get(queryKey[0] as string, { params: meta }).then((response) => response.data),
+        apiClient
+          .get(queryKey[0] as string, { params: meta })
+          .then((response) => response.data as unknown),
     },
   },
 });

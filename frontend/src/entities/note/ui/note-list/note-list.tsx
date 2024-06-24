@@ -1,6 +1,7 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { FC } from 'react';
-import { INote, Note } from 'entities/note';
+import { INote } from '../../types';
+import { Note } from '../note';
 
 interface IProps {
   notes: INote[];
