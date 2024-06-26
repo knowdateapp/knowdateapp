@@ -47,6 +47,9 @@ type DefaultErrorResponse struct {
 	Message string `json:"message"`
 }
 
+// GetNoteByIdResponse defines model for GetNoteByIdResponse.
+type GetNoteByIdResponse = Note
+
 // ListNotesResponse defines model for ListNotesResponse.
 type ListNotesResponse struct {
 	Notes []Note `json:"notes"`
@@ -86,6 +89,9 @@ type ServerInterface interface {
 	// (POST /{workspace}/notes)
 	CreateNote(w http.ResponseWriter, r *http.Request, workspace Workspace)
 
+	// (GET /{workspace}/notes/{note-id})
+	GetNoteById(w http.ResponseWriter, r *http.Request, workspace Workspace, noteId NoteId)
+
 	// (PATCH /{workspace}/notes/{note-id})
 	UpdateNote(w http.ResponseWriter, r *http.Request, workspace Workspace, noteId NoteId)
 }
@@ -101,6 +107,11 @@ func (_ Unimplemented) ListNotes(w http.ResponseWriter, r *http.Request, workspa
 
 // (POST /{workspace}/notes)
 func (_ Unimplemented) CreateNote(w http.ResponseWriter, r *http.Request, workspace Workspace) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// (GET /{workspace}/notes/{note-id})
+func (_ Unimplemented) GetNoteById(w http.ResponseWriter, r *http.Request, workspace Workspace, noteId NoteId) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -161,6 +172,41 @@ func (siw *ServerInterfaceWrapper) CreateNote(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateNote(w, r, workspace)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r.WithContext(ctx))
+}
+
+// GetNoteById operation middleware
+func (siw *ServerInterfaceWrapper) GetNoteById(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var err error
+
+	// ------------- Path parameter "workspace" -------------
+	var workspace Workspace
+
+	err = runtime.BindStyledParameterWithOptions("simple", "workspace", chi.URLParam(r, "workspace"), &workspace, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "workspace", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "note-id" -------------
+	var noteId NoteId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "note-id", chi.URLParam(r, "note-id"), &noteId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "note-id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetNoteById(w, r, workspace, noteId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -325,6 +371,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/{workspace}/notes", wrapper.CreateNote)
 	})
 	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/{workspace}/notes/{note-id}", wrapper.GetNoteById)
+	})
+	r.Group(func(r chi.Router) {
 		r.Patch(options.BaseURL+"/{workspace}/notes/{note-id}", wrapper.UpdateNote)
 	})
 
@@ -334,21 +383,22 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"//96l0677g4AAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

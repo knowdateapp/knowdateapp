@@ -63,7 +63,7 @@ func (r *NoteRepository) Update(ctx context.Context, note *models.Note) error {
 	return nil
 }
 
-func (r *NoteRepository) Get(ctx context.Context, workspace string, ID string) (*models.Note, error) {
+func (r *NoteRepository) GetByID(ctx context.Context, workspace string, ID string) (*models.Note, error) {
 	objectID, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse object id %s: %s", ID, err)

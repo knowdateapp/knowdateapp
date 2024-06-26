@@ -12,6 +12,7 @@ type Service interface {
 	Create(ctx context.Context, note *models.Note) (*models.Note, error)
 	Update(ctx context.Context, note *models.Note, filename string, file *bytes.Buffer) (*models.Note, error)
 	GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error)
+	GetByID(ctx context.Context, workspace string, ID string) (*models.Note, error)
 }
 
 type Implementation struct {

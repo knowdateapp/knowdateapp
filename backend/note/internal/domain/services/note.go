@@ -16,7 +16,7 @@ import (
 type NoteRepository interface {
 	Create(ctx context.Context, note *models.Note) (string, error)
 	Update(ctx context.Context, note *models.Note) error
-	Get(ctx context.Context, workspace string, ID string) (*models.Note, error)
+	GetByID(ctx context.Context, workspace string, ID string) (*models.Note, error)
 	GetByWorkspace(ctx context.Context, workspace string) ([]*models.Note, error)
 }
 
@@ -67,7 +67,7 @@ func (s *NoteService) Update(ctx context.Context, note *models.Note, filename st
 		}
 	}
 
-	n, err := s.repository.Get(ctx, note.Workspace, note.ID)
+	n, err := s.repository.GetByID(ctx, note.Workspace, note.ID)
 	if err != nil {
 		s.logger.Error(fmt.Sprintf("note was not updated: %s", err))
 		return nil, err
@@ -92,4 +92,13 @@ func (s *NoteService) GetByWorkspace(ctx context.Context, workspace string) ([]*
 		return nil, err
 	}
 	return notes, nil
+}
+
+func (s *NoteService) GetByID(ctx context.Context, workspace string, ID string) (*models.Note, error) {
+	note, err := s.repository.GetByID(ctx, workspace, ID)
+	if err != nil {
+		s.logger.Error(fmt.Sprintf("can not get the note by id: %s", err))
+		return nil, err
+	}
+	return note, nil
 }

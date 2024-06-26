@@ -36,6 +36,20 @@ paths:
           $ref: '#/components/responses/DefaultErrorResponse'
 
   /{workspace}/notes/{note-id}:
+    get:
+      description: This endpoint returns the user's note by id.
+      operationId: GetNoteById
+      tags:
+        - notes
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/NoteId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetNoteByIdResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
     patch:
       description: This endpoint updates the user's note. The body must contain note metadata and note file.
       operationId: UpdateNote
@@ -163,6 +177,13 @@ components:
 
     CreateNoteResponse:
       description: The note has been successfully created.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Note'
+
+    GetNoteByIdResponse:
+      description: The user's note.
       content:
         'application/json':
           schema:
