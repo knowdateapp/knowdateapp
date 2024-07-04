@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Card API
+  description: This API provides an interface for creating and managing cards.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8010/api/note/v1
+    description: Server for local development.
+paths:
+  /{workspace}/cards:
+    get:
+      description: This endpoint returns the user's cards.
+      operationId: ListCards
+      tags:
+        - cards
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListCardsResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+    post:
+      description: This endpoint creates a user's card.
+      operationId: CreateCard
+      tags:
+        - cards
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCardRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateCardResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /{workspace}/cards/{card-id}:
+    get:
+      description: This endpoint returns the user's card by id.
+      operationId: GetCardById
+      tags:
+        - cards
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/CardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCardByIdResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+    patch:
+      description: This endpoint updates the user's card.
+      operationId: UpdateCard
+      tags:
+        - cards
+      parameters:
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCardRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/UpdateCardResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  parameters:
+    Workspace:
+      description: This parameter defines the current workspace.
+      in: path
+      name: workspace
+      schema:
+        type: string
+      required: true
+
+    CardId:
+      description: This parameter defines the current card id.
+      in: path
+      name: card-id
+      schema:
+        type: string
+      required: true
+
+  schemas:
+    Card:
+      type: object
+      required:
+        - id
+        - question
+        - answer
+        - workspace
+      properties:
+        id:
+          type: string
+          nullable: false
+        question:
+          type: string
+          nullable: false
+        answer:
+          type: string
+          nullable: false
+        workspace:
+          type: string
+          nullable: false
+
+  requestBodies:
+    CreateCardRequest:
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - question
+              - answer
+            properties:
+              question:
+                type: string
+                nullable: false
+              answer:
+                type: string
+                nullable: false
+
+    UpdateCardRequest:
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - question
+              - answer
+            properties:
+              question:
+                type: string
+                nullable: false
+              answer:
+                type: string
+                nullable: false
+
+  responses:
+    DefaultErrorResponse:
+      description: Default response model for response codes 4** and 5**.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                nullable: false
+              message:
+                type: string
+                nullable: false
+
+    ListCardsResponse:
+      description: List of user Cards.
+      content:
+        'application/json':
+          schema:
+            type: object
+            required:
+              - cards
+            properties:
+              cards:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+                nullable: false
+
+    CreateCardResponse:
+      description: The card has been successfully created.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Card'
+
+    GetCardByIdResponse:
+      description: The user's card.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Card'
+
+    UpdateCardResponse:
+      description: The card has been successfully updated.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/Card'

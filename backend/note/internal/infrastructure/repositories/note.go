@@ -76,7 +76,7 @@ func (r *NoteRepository) GetByID(ctx context.Context, workspace string, ID strin
 	note := &models.Note{}
 	err = result.Decode(&note)
 	if err != nil {
-		return nil, fmt.Errorf("failed to find not by id: %s", err)
+		return nil, fmt.Errorf("failed to find note by id: %s", err)
 	}
 
 	return note, nil
