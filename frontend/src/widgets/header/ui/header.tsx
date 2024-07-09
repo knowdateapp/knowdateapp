@@ -1,6 +1,7 @@
 import { Flex, Heading } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { AuthButton } from 'features/auth';
+import { MenuForm } from 'features/menu';
 import { useAuth } from 'entities/session';
 
 export const Header: FC = () => {
@@ -34,7 +35,11 @@ export const Header: FC = () => {
       bgColor={isSticky ? 'white' : 'transparent'}
     >
       <Heading size="xl">KnowlegdeHub</Heading>
-      {isAuth && <AuthButton />}
+      {/*TODO: Как сделать отступ между ними?*/}
+      <Flex position="sticky" justifyContent="space-between" alignItems="center">
+        {isAuth && <AuthButton />}
+        {isAuth && <MenuForm />}
+      </Flex>
     </Flex>
   );
 };

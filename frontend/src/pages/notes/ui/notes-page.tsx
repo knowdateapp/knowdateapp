@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import { FC } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 import { useNotes, NoteList } from 'entities/note';
 import { useAuth } from 'entities/session';
-import { generatePath, useNavigate } from 'react-router-dom';
 import { Routes } from 'shared/config';
 
 export const NotesPage: FC = () => {
   const { workspace } = useAuth();
+  // TODO: Потенциально undefined.
   const { data } = useNotes(workspace);
   const navigate = useNavigate();
 
