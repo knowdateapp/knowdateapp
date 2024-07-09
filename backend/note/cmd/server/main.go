@@ -15,7 +15,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	carddesc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/card"
 	notedesc "github.com/knowdateapp/knowdateapp/backend/note/internal/api/http/v1/note"
+	cardapp "github.com/knowdateapp/knowdateapp/backend/note/internal/app/v1/card"
 	noteapp "github.com/knowdateapp/knowdateapp/backend/note/internal/app/v1/note"
 	"github.com/knowdateapp/knowdateapp/backend/note/internal/domain/services"
 	"github.com/knowdateapp/knowdateapp/backend/note/internal/infrastructure/repositories"
@@ -77,8 +79,9 @@ func main() {
 	}()
 
 	var (
-		database   = "note"
-		collection = "notes"
+		database        = "note"
+		notesCollection = "notes"
+		cardsCollection = "cards"
 	)
 
 	// Check MongoDB connection status.
@@ -90,13 +93,16 @@ func main() {
 	}
 
 	// Services setup.
-	noteRepository := repositories.NewNoteRepository(db, database, collection)
+	noteRepository := repositories.NewNoteRepository(db, database, notesCollection)
 	noteStorage := repositories.NewNoteStorageFile(*storagePath)
+	cardRepository := repositories.NewCardRepository(db, database, cardsCollection)
 
 	noteService := services.NewNoteService(noteRepository, noteStorage, logger)
+	cardService := services.NewCardService(cardRepository, logger)
 
 	// HTTP server setup.
 	noteServer := noteapp.NewNoteServerImplementation(noteService)
+	cardServer := cardapp.NewCardServerImplementation(cardService)
 
 	corsHandler := cors.Handler(cors.Options{
 		AllowedOrigins: []string{"*"},
@@ -131,6 +137,7 @@ func main() {
 	router.Use(corsHandler)
 
 	notedesc.RegisterNoteServerHandler(router, noteServer, BaseURL)
+	carddesc.RegisterCardServerHandler(router, cardServer, BaseURL)
 
 	logger.Info(fmt.Sprint("note server startup on port:", ServerAddress))
 

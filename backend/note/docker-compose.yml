@@ -47,7 +47,8 @@ services:
       PORT: 80
       URLS: >
         [
-          { url: "http://localhost:8014/api/note/v1/note.openapi.yaml", name: "Note API" }
+          { url: "http://localhost:8014/api/note/v1/note.openapi.yaml", name: "Note API" },
+          { url: "http://localhost:8014/api/note/v1/card.openapi.yaml", name: "Card API" }
         ]
   nginx:
     image: nginx:1.27.0

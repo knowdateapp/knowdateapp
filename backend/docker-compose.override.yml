@@ -15,6 +15,7 @@ services:
       URLS: >
         [ 
           { url: "http://localhost:8014/api/note/v1/note.openapi.yaml", name: "Note API" },
+          { url: "http://localhost:8014/api/note/v1/card.openapi.yaml", name: "Card API" },
           { url: "http://localhost:8014/api/user/v1/user.openapi.yaml", name: "User API" },
           { url: "http://localhost:8014/api/user/v1/auth.openapi.yaml", name: "Auth API" }
         ]
