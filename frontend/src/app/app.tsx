@@ -1,7 +1,5 @@
-import { Box, Flex } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { Header } from 'widgets/header';
 import { AuthContext } from 'entities/session';
 import { Workspace } from 'shared/model';
 import { Providers } from './providers';
@@ -27,12 +25,7 @@ export const App: FC = () => {
       <AuthContext.Provider
         value={{ workspace, setWorkspace: onSetWorkSpace, isAuth: Boolean(workspace) }}
       >
-        <Flex flexDirection="column" px={4} py={4}>
-          <Header />
-          <Box flex={1} as="main" pt={8}>
-            <RouterProvider router={router} />
-          </Box>
-        </Flex>
+        <RouterProvider router={router} />
       </AuthContext.Provider>
     </Providers>
   );

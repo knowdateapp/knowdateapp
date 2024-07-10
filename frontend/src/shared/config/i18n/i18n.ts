@@ -17,7 +17,7 @@ void i18n
   .use(resourcesToBackend(loadNameSpace))
   .init({
     defaultNS,
-    fallbackLng: 'en',
+    fallbackLng: 'ru',
     debug: true,
     interpolation: {
       escapeValue: false,

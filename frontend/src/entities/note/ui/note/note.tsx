@@ -1,6 +1,6 @@
 import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
 import { FC, MouseEventHandler } from 'react';
-import { INote } from '../../model';
+import { INote } from '../../types';
 
 interface IProps {
   note: INote;

@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import { FC } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 import { useNotes, NoteList } from 'entities/note';
 import { useAuth } from 'entities/session';
-import { generatePath, useNavigate } from 'react-router-dom';
 import { Routes } from 'shared/config';
 
 export const NotesPage: FC = () => {
@@ -12,5 +12,13 @@ export const NotesPage: FC = () => {
 
   const onNoteClick = (noteId: string) => navigate(generatePath(Routes.Note, { noteId }));
 
-  return <Box>{data && <NoteList notes={data.notes} onNoteClick={onNoteClick} />}</Box>;
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <Box>
+      <NoteList notes={data.notes} onNoteClick={onNoteClick} />
+    </Box>
+  );
 };
