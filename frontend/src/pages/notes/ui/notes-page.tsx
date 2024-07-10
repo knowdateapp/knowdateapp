@@ -13,5 +13,13 @@ export const NotesPage: FC = () => {
 
   const onNoteClick = (noteId: string) => navigate(generatePath(Routes.Note, { noteId }));
 
-  return <Box>{data && <NoteList notes={data.notes} onNoteClick={onNoteClick} />}</Box>;
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <Box>
+      <NoteList notes={data.notes} onNoteClick={onNoteClick} />
+    </Box>
+  );
 };

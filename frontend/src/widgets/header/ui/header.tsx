@@ -2,6 +2,7 @@ import { Flex, Heading } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { AuthButton } from 'features/auth';
 import { MenuForm } from 'features/menu';
+import { CreateNoteButton } from 'features/create-note';
 import { useAuth } from 'entities/session';
 
 export const Header: FC = () => {
@@ -35,6 +36,12 @@ export const Header: FC = () => {
       bgColor={isSticky ? 'white' : 'transparent'}
     >
       <Heading size="xl">KnowlegdeHub</Heading>
+      {isAuth && (
+        <Flex gap={2}>
+          <CreateNoteButton />
+          <AuthButton />
+        </Flex>
+      )}
       {/*TODO: Как сделать отступ между ними?*/}
       <Flex position="sticky" justifyContent="space-between" alignItems="center">
         {isAuth && <AuthButton />}

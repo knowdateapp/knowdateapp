@@ -9,8 +9,11 @@
         "title": "Войдите в свою учетную запись"
       }
     },
+    "createNoteButton": {
+      "createButtonText": "Создать заметку"
+    },
     "menu": {
-      "menu-form": {
+      "menuForm": {
         "notes": "Заметки",
         "cards": "Карточки"
       }
