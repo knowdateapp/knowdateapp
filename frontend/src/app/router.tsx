@@ -6,6 +6,7 @@ import { Header } from 'widgets/header';
 import { ProtectedRoute } from 'features/auth';
 import { Routes } from 'shared/config';
 import { PageLayout } from 'shared/ui';
+import { CardsPage } from '../pages/cards';
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: Routes.Note,
         element: <NotePage />,
+      },
+      {
+        path: Routes.Cards,
+        element: <CardsPage />,
       },
     ],
   },

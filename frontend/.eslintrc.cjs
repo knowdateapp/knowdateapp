@@ -17,7 +17,7 @@ module.exports = {
     'plugin:optimize-regex/recommended',
     'plugin:react/jsx-runtime',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'index.html', "src/shared/config/i18n/i18n.ts"],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'index.html', 'src/shared/config/i18n/i18n.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -54,7 +54,7 @@ module.exports = {
       'react/jsx-uses-react': 'off',
       'import/no-unresolved': 'error',
       'no-console': 'error',
-      "@conarti/feature-sliced/layers-slices": "off"
+      '@conarti/feature-sliced/layers-slices': 'off',
     },
   },
 };

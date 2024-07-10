@@ -1,5 +1,7 @@
 export enum Routes {
-  Notes = '/',
   Auth = '/auth',
-  Note = '/:noteId',
+  Notes = '/notes',
+  Note = '/notes/:noteId',
+  Cards = '/cards',
+  Card = '/cards/:cardId',
 }

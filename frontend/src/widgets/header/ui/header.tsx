@@ -1,7 +1,7 @@
 import { Flex, Heading } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { AuthButton } from 'features/auth';
-import { MenuForm } from 'features/menu';
+import { HamburgerMenuButton } from 'features/menu';
 import { CreateNoteButton } from 'features/create-note';
 import { useAuth } from 'entities/session';
 
@@ -40,13 +40,9 @@ export const Header: FC = () => {
         <Flex gap={2}>
           <CreateNoteButton />
           <AuthButton />
+          <HamburgerMenuButton />
         </Flex>
       )}
-      {/*TODO: Как сделать отступ между ними?*/}
-      <Flex position="sticky" justifyContent="space-between" alignItems="center">
-        {isAuth && <AuthButton />}
-        {isAuth && <MenuForm />}
-      </Flex>
     </Flex>
   );
 };
