@@ -1,14 +1,17 @@
 import { FC } from 'react';
-import { useAuth } from '../../../entities/session';
-import { useNavigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
+import { CardList } from '../../../entities/card';
+import { useAuth } from '../../../entities/session';
+import { useCards } from '../../../entities/card/api';
 
 export const CardsPage: FC = () => {
   const { workspace } = useAuth();
-  const navigate = useNavigate();
+  // TODO: Потенциально undefined.
+  const { data } = useCards(workspace);
 
-  workspace;
-  navigate;
-
-  return <Box>Cards</Box>;
+  return (
+    <Box>
+      <CardList cards={data ? data.cards : []} />
+    </Box>
+  );
 };

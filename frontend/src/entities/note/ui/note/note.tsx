@@ -6,6 +6,7 @@ interface IProps {
   note: INote;
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
+
 export const Note: FC<IProps> = ({ note, onClick }) => {
   return (
     <Card onClick={onClick} cursor={onClick ? 'pointer' : 'default'}>
