@@ -12,6 +12,9 @@
     "createNoteButton": {
       "createButtonText": "Создать заметку"
     },
+    "createCardButton": {
+      "createButtonText": "Создать карточку"
+    },
     "menu": {
       "menuForm": {
         "notes": "Заметки",
