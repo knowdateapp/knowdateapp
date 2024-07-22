@@ -6,7 +6,6 @@ import { useCards } from 'entities/card/api';
 
 export const CardsPage: FC = () => {
   const { workspace } = useAuth();
-  // TODO: Потенциально undefined.
   const { data } = useCards(workspace);
 
   return (

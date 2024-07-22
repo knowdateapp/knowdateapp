@@ -54,7 +54,6 @@ export const AuthForm: FC = () => {
   const onSubmit: SubmitHandler<FormFields> = ({ username }) => setWorkspace(username);
 
   return (
-    // TODO: Что за дичь? void handleSubmit(onSubmit)(event)}
     <chakra.form minW="xl" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
       <Heading>{t('features.auth.authForm.title')}</Heading>
       <Stack mt={10} borderColor="gray.200" position="relative">

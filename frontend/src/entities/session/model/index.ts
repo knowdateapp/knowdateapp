@@ -1,2 +1,2 @@
-export { AuthContext } from './auth-context.ts';
-export type { IAuthContext } from './auth-context.ts';
+export { AuthContext } from './context.ts';
+export type { AuthContextType } from './context.ts';

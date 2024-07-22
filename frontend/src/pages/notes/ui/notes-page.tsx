@@ -7,7 +7,6 @@ import { Routes } from 'shared/config';
 
 export const NotesPage: FC = () => {
   const { workspace } = useAuth();
-  // TODO: Потенциально undefined.
   const { data } = useNotes(workspace);
   const navigate = useNavigate();
 

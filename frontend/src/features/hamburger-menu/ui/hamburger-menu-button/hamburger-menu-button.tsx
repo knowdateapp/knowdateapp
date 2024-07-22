@@ -13,6 +13,7 @@ export const HamburgerMenuButton: FC = () => {
   const onCardsClick = () => navigate(generatePath(Routes.Cards));
 
   return (
+    // TODO: Проверить стили.
     <Menu>
       <MenuButton as={IconButton} icon={<HamburgerIcon />} aria-label="Options" variant="outline" />
       <MenuList>

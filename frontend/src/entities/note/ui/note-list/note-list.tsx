@@ -18,7 +18,6 @@ export const NoteList: FC<Props> = ({ notes, onNoteClick }) => {
           <Note
             key={note.id}
             note={note}
-            // TODO: А мы хотим допустить использование этого компонента без onNoteClick?
             onClick={onNoteClick ? onListNoteClick(note.id) : undefined}
           />
         </GridItem>
