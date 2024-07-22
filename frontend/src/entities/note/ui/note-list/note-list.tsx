@@ -1,18 +1,15 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { FC } from 'react';
-import { INote } from '../../types';
+import { NoteEntity } from 'entities/note/types';
 import { Note } from '../note';
 
-// TODO: Абстрактное название. Можно сделать более абстрактно и вынести в общий компонент.
-//  По факту такое и для карточек нужно и для заметок.
-interface IProps {
-  notes: INote[];
-  onNoteClick?: (noteId: INote['id']) => void;
-}
+type Props = {
+  notes: NoteEntity[];
+  onNoteClick?: (noteId: NoteEntity['id']) => void;
+};
 
-export const NoteList: FC<IProps> = ({ notes, onNoteClick }) => {
-  // TODO: Что это такое?
-  const onListNoteClick = (noteId: INote['id']) => () => onNoteClick?.(noteId);
+export const NoteList: FC<Props> = ({ notes, onNoteClick }) => {
+  const onListNoteClick = (noteId: NoteEntity['id']) => () => onNoteClick?.(noteId);
 
   return (
     <Grid templateColumns="repeat(5, 1fr)" gap={6}>

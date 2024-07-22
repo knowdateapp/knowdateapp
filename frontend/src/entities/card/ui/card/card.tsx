@@ -1,12 +1,12 @@
 import { CardBody, CardHeader, Heading, Text, Card as CardElement } from '@chakra-ui/react';
 import { FC } from 'react';
-import { ICard } from '../../types';
+import { CardEntity } from 'entities/card';
 
-interface IProps {
-  card: ICard;
-}
+type Props = {
+  card: CardEntity;
+};
 
-export const Card: FC<IProps> = ({ card }) => {
+export const Card: FC<Props> = ({ card }) => {
   return (
     <CardElement cursor="default">
       <CardHeader>

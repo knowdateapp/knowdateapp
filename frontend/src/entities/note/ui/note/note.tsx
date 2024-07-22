@@ -1,13 +1,13 @@
 import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
 import { FC, MouseEventHandler } from 'react';
-import { INote } from '../../types';
+import { NoteEntity } from 'entities/note/types';
 
-interface IProps {
-  note: INote;
+type Props = {
+  note: NoteEntity;
   onClick?: MouseEventHandler<HTMLDivElement> | undefined;
-}
+};
 
-export const Note: FC<IProps> = ({ note, onClick }) => {
+export const Note: FC<Props> = ({ note, onClick }) => {
   return (
     <Card onClick={onClick} cursor={onClick ? 'pointer' : 'default'}>
       <CardHeader>

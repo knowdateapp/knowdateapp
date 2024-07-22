@@ -8,8 +8,7 @@ export const AuthButton: FC = () => {
   const { isAuth, setWorkspace } = useAuth();
 
   const onClick = () => {
-    // TODO: Вот тут используется уже null.
-    setWorkspace(null);
+    setWorkspace('');
   };
 
   return <Button onClick={onClick}>{t(isAuth ? 'logOut' : 'logIn')}</Button>;

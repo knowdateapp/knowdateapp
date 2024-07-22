@@ -1,1 +1,1 @@
-export * from './menu-button.tsx';
+export { HamburgerMenuButton } from './menu-button.tsx';

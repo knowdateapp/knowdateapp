@@ -1,1 +1,1 @@
-export * from './create-card-button';
+export { CreateCardButton } from './create-card-button';

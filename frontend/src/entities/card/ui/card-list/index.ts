@@ -1,1 +1,1 @@
-export * from './card-list.tsx';
+export { CardList } from './card-list.tsx';

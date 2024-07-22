@@ -1,1 +1,1 @@
-export type Workspace = string | null;
+export type Workspace = string;

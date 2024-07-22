@@ -1,11 +1,10 @@
-import { Workspace } from '../../../shared/model';
-import { apiClient } from '../../../shared/api';
-import { ICard } from '../types';
-import { ICreateCardParams } from './types';
+import { Workspace } from 'shared/model';
+import { apiClient } from 'shared/api';
+import { CardEntity, CreateCardParams } from '../types';
 
 const getUrl = (workspace: Workspace) => `${workspace}/cards`;
 
 export const controller = {
-  createCard: ({ workspace, question, answer }: ICreateCardParams) =>
-    apiClient.post<ICard>(getUrl(workspace), { question, answer }),
+  createCard: ({ workspace, question, answer }: CreateCardParams) =>
+    apiClient.post<CardEntity>(getUrl(workspace), { question, answer }),
 };

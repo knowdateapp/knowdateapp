@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { ICreateNoteParams, INote, notesController } from 'entities/note';
+import { CreateNoteParams, NoteEntity, notesController } from 'entities/note';
 import { IApiError } from 'shared/api';
 
 export const useCreateNote = () => {
-  return useMutation<AxiosResponse<INote>, IApiError, ICreateNoteParams>({
+  return useMutation<AxiosResponse<NoteEntity>, IApiError, CreateNoteParams>({
     mutationFn: notesController.createNote,
   });
 };

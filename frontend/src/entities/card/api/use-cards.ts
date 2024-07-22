@@ -1,15 +1,12 @@
-import { Workspace } from '../../../shared/model';
-import { queriesKeys } from '../../note/api';
 import { useQuery } from '@tanstack/react-query';
-import { ICardsResponse } from '../types';
-import { IApiError } from '../../../shared/api';
+import { IApiError } from 'shared/api';
+import { Workspace } from 'shared/model';
+import { CardsResponse } from '../types';
+import { queriesKeys } from './queries-keys.ts';
 
 export const useCards = (workspace: Workspace) => {
   const queryKey = queriesKeys.cards(workspace);
-  const result = useQuery<ICardsResponse, IApiError>({
+  return useQuery<CardsResponse, IApiError>({
     queryKey,
   });
-
-  // TODO: Зачем тут queryKey отдается?
-  return { ...result, queryKey };
 };

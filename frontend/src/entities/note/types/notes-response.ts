@@ -1,5 +1,5 @@
-import { INote } from './note';
+import { NoteEntity } from './note-entity.ts';
 
-export interface INotesResponse {
-  notes: INote[];
-}
+export type NotesResponse = {
+  notes: NoteEntity[];
+};

@@ -1,2 +1,2 @@
-export * from './card-list';
-export * from './card';
+export { CardList } from './card-list';
+export { Card } from './card';

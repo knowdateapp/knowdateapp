@@ -1,5 +1,5 @@
-import { ICard } from './card';
+import { CardEntity } from './card-entity.ts';
 
-export interface ICardsResponse {
-  cards: ICard[];
-}
+export type CardsResponse = {
+  cards: CardEntity[];
+};

@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { useCreateCard } from '../../api/use-create-card.ts';
 import { generatePath, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../../entities/session';
-import { Routes } from '../../../../shared/config';
+import { useAuth } from 'entities/session';
+import { Routes } from 'shared/config';
+import { useCreateCard } from 'features/create-card/api';
 
 export const CreateCardButton: FC = () => {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Box } from '@chakra-ui/react';
-import { CardList } from '../../../entities/card';
-import { useAuth } from '../../../entities/session';
-import { useCards } from '../../../entities/card/api';
+import { CardList } from 'entities/card';
+import { useAuth } from 'entities/session';
+import { useCards } from 'entities/card/api';
 
 export const CardsPage: FC = () => {
   const { workspace } = useAuth();

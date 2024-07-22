@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { ICard } from '../../types';
 import { Card } from '../card';
+import { CardEntity } from 'entities/card/types';
 
-interface IProps {
-  cards: ICard[];
-}
+type Props = {
+  cards: CardEntity[];
+};
 
-export const CardList: FC<IProps> = ({ cards }) => {
+export const CardList: FC<Props> = ({ cards }) => {
   return (
     <Grid templateColumns="repeat(5, 1fr)" gap={5}>
       {cards.map((card) => (

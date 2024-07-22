@@ -1,7 +1,6 @@
-// TODO: Почему не type?
-export interface ICard {
+export type CardEntity = {
   id: string;
   answer: string;
   question: string;
   workspace: string;
-}
+};

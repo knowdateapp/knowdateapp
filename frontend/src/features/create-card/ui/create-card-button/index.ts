@@ -1,1 +1,1 @@
-export * from './create-card-button.tsx';
+export { CreateCardButton } from './create-card-button.tsx';

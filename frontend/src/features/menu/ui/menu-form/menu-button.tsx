@@ -9,7 +9,6 @@ export const HamburgerMenuButton: FC = () => {
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
 
-  // TODO: Как это использовать?
   const onNotesClick = () => navigate(generatePath(Routes.Notes));
   const onCardsClick = () => navigate(generatePath(Routes.Cards));
 
