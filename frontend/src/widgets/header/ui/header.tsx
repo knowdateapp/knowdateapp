@@ -1,15 +1,14 @@
-import { Flex, Heading, useDisclosure } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { useAuth } from 'entities/session';
 import { AuthButton } from 'features/auth';
 import { HamburgerMenuButton } from 'features/hamburger-menu';
-import { CreateCardButton, CreateCardFormModal } from 'features/create-card';
+import { CreateCardFormModal } from 'features/create-card';
 import { CreateNoteButton } from 'features/create-note';
 
 export const Header: FC = () => {
   const { isAuth } = useAuth();
   const [isSticky, setIsSticky] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const onScroll = () => {
@@ -41,8 +40,7 @@ export const Header: FC = () => {
       {isAuth && (
         <Flex gap={2}>
           <CreateNoteButton />
-          <CreateCardButton onClick={onOpen} />
-          {isOpen && <CreateCardFormModal isOpen={isOpen} onClose={onClose} />}
+          <CreateCardFormModal />
           <AuthButton />
           <HamburgerMenuButton />
         </Flex>

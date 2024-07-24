@@ -5,15 +5,22 @@
   "password": "Пароль",
   "features": {
     "auth": {
-      "authForm": {
+      "auth-form": {
         "title": "Войдите в свою учетную запись"
       }
     },
     "createNoteButton": {
       "createButtonText": "Создать заметку"
     },
-    "createCardButton": {
-      "createButtonText": "Создать карточку"
+    "createCard": {
+      "createButtonText": "Создать карточку",
+      "modalHeader": "Создайте карточку",
+      "formInputQuestionLabel": "Вопрос",
+      "formInputQuestionPlaceholder": "What do you get if you multiply six by nine?",
+      "formInputAnswerLabel": "Ответ",
+      "formInputAnswerPlaceholder": "42",
+      "saveButtonText": "Сохранить",
+      "closeButtonText": "Закрыть"
     },
     "menu": {
       "menuForm": {

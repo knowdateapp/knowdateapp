@@ -8,6 +8,8 @@ type Props = {
 
 export const Card: FC<Props> = ({ card }) => {
   return (
+    // TODO: Задать константный размер карточки и обрезать вопрос при помощи троеточия.
+    // TODO: Чтоб карточка не разъезжалась по размеру сильно может стоит ограничить вопрос максимум 120 (или меньше) символами пока.
     <CardElement cursor="default">
       <CardHeader>
         <Heading size="md">{card.question}</Heading>
