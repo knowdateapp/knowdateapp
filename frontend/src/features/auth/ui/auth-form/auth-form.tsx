@@ -22,7 +22,7 @@ import {
   MAX_USERNAME_LENGTH,
   MIN_PASSWORD_LENGTH,
   MIN_USERNAME_LENGTH,
-} from '../../model';
+} from 'features/auth/model';
 
 const schema = z.object({
   username: z
