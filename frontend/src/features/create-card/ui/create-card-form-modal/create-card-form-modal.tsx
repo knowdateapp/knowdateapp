@@ -27,6 +27,7 @@ type CreateCardFormData = {
 };
 
 export const CreateCardFormModal: FC = () => {
+  // TODO: Добавить валидацию.
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();

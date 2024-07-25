@@ -13,7 +13,7 @@ export const CardList: FC<Props> = ({ cards }) => {
     <Grid templateColumns="repeat(5, 1fr)" gap={6}>
       {cards.map((card) => (
         <GridItem key={card.id}>
-          <Card key={card.id} card={card} />
+          <Card card={card} />
         </GridItem>
       ))}
     </Grid>

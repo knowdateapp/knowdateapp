@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { useAuth } from 'entities/session';
 import { Routes } from 'shared/config';
-import { useCreateNote } from 'features/create-note/api';
+import { useCreateNote } from 'features/create-note';
 
 export const CreateNoteButton: FC = () => {
   const navigate = useNavigate();

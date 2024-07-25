@@ -7,7 +7,7 @@ import { Providers } from './providers';
 import { router } from './router.tsx';
 
 export const App: FC = () => {
-  const [workspace, setWorkspace] = useState<Workspace>(localStorage.getItem('workspace') || '');
+  const [workspace, setWorkspace] = useState<Workspace>(localStorage.getItem('workspace') ?? '');
 
   const onSetWorkSpace = (userWorkspace: Workspace) => {
     setWorkspace(userWorkspace);

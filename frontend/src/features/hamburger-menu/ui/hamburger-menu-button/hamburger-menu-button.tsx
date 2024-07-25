@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Routes } from 'shared/config';
 
 export const HamburgerMenuButton: FC = () => {
-  const { t } = useTranslation('translation');
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const onNotesClick = () => navigate(generatePath(Routes.Notes));
