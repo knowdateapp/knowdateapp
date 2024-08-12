@@ -1,1 +1,1 @@
-export { CreateCardFormModal } from './create-card-form-modal.tsx';
+export { CreateCardFormModalButton } from './create-card-form-modal-button.tsx';

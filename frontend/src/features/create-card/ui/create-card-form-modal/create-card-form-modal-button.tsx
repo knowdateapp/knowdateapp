@@ -26,7 +26,7 @@ type CreateCardFormData = {
   answer: string;
 };
 
-export const CreateCardFormModal: FC = () => {
+export const CreateCardFormModalButton: FC = () => {
   // TODO: Добавить валидацию.
   const navigate = useNavigate();
   const { t } = useTranslation();

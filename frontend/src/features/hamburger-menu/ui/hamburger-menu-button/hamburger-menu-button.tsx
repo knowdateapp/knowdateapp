@@ -22,7 +22,7 @@ export const HamburgerMenuButton: FC = () => {
           justifyContent="space-between"
           gap={2}
           minW={200}
-          padding="0.5em 0"
+          padding={0.5}
           bg="gray.100"
         >
           <MenuItem justifyContent="center" onClick={onNotesClick}>

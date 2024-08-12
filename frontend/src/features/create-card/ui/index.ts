@@ -1,1 +1,1 @@
-export { CreateCardFormModal } from './create-card-form-modal';
+export { CreateCardFormModalButton } from './create-card-form-modal';

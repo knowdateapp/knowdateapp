@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useAuth } from 'entities/session';
 import { AuthButton } from 'features/auth';
 import { HamburgerMenuButton } from 'features/hamburger-menu';
-import { CreateCardFormModal } from 'features/create-card';
+import { CreateCardFormModalButton } from 'features/create-card';
 import { CreateNoteButton } from 'features/create-note';
 
 export const Header: FC = () => {
@@ -40,7 +40,7 @@ export const Header: FC = () => {
       {isAuth && (
         <Flex gap={2}>
           <CreateNoteButton />
-          <CreateCardFormModal />
+          <CreateCardFormModalButton />
           <AuthButton />
           <HamburgerMenuButton />
         </Flex>
