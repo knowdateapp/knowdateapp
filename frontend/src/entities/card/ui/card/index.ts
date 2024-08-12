@@ -1,1 +1,1 @@
-export { Card } from './card.tsx';
+export { CardForm } from './card-form.tsx';

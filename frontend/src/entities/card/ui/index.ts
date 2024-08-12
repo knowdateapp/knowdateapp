@@ -1,2 +1,2 @@
 export { CardList } from './card-list';
-export { Card } from './card';
+export { CardForm } from './card';

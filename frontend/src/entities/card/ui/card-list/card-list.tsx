@@ -1,21 +1,18 @@
 import { FC } from 'react';
-import { Grid, GridItem } from '@chakra-ui/react';
-import { Card } from '../card';
-import { CardEntity } from 'entities/card/types';
+import { SimpleGrid } from '@chakra-ui/react';
+import { CardForm } from 'entities/card';
+import { Card } from 'entities/card/types';
 
 type Props = {
-  cards: CardEntity[];
+  cards: Card[];
 };
 
 export const CardList: FC<Props> = ({ cards }) => {
   return (
-    // TODO: Нужно более гибким способом задавать количество элементов в строке.
-    <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+    <SimpleGrid minChildWidth={200} spacing={6}>
       {cards.map((card) => (
-        <GridItem key={card.id}>
-          <Card card={card} />
-        </GridItem>
+        <CardForm card={card} />
       ))}
-    </Grid>
+    </SimpleGrid>
   );
 };

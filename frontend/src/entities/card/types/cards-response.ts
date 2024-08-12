@@ -1,5 +1,5 @@
-import { CardEntity } from './card-entity.ts';
+import { Card } from './card.ts';
 
 export type CardsResponse = {
-  cards: CardEntity[];
+  cards: Card[];
 };

@@ -1,1 +1,1 @@
-export { Note } from './note.tsx';
+export { NoteForm } from './note-form.tsx';

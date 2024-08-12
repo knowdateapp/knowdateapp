@@ -1,5 +1,5 @@
-import { NoteEntity } from './note-entity.ts';
+import { Note } from './note.ts';
 
 export type NotesResponse = {
-  notes: NoteEntity[];
+  notes: Note[];
 };

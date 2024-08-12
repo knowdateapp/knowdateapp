@@ -1,2 +1,2 @@
-export { Note } from './note';
+export { NoteForm } from './note';
 export { NoteList } from './note-list';

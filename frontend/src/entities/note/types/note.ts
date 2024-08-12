@@ -1,8 +1,8 @@
 import { Workspace } from 'shared/model';
 
-export type CardEntity = {
+export type Note = {
   id: string;
-  answer: string;
-  question: string;
+  title: string;
   workspace: Workspace;
+  content_uri: string;
 };
