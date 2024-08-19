@@ -1,5 +1,7 @@
+import { Box } from '@chakra-ui/react';
 import { EditorContent } from '@tiptap/react';
 import { useRef } from 'react';
+import { EditorHeader } from './components';
 import { useTextEditor } from './hooks';
 // import { LinkMenu } from '@/components/menus';
 
@@ -16,7 +18,7 @@ export const TextEditor = () => {
   const menuContainerRef = useRef(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
-  const { editor } = useTextEditor('');
+  const { editor, characterCount, leftSidebar } = useTextEditor('');
 
   // const providerValue = useMemo(() => {
   //   return {};
@@ -28,25 +30,25 @@ export const TextEditor = () => {
 
   return (
     // <EditorContext.Provider value={providerValue}>
-    <div className="flex h-full" ref={menuContainerRef}>
+    <Box display="flex" height="100%" ref={menuContainerRef}>
       {/*<Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />*/}
-      {/*<div className="relative flex flex-col flex-1 h-full overflow-hidden">*/}
-      {/*<EditorHeader*/}
-      {/*  characters={characterCount.characters()}*/}
-      {/*  words={characterCount.words()}*/}
-      {/*  isSidebarOpen={leftSidebar.isOpen}*/}
-      {/*  toggleSidebar={leftSidebar.toggle}*/}
-      {/*/>*/}
-      <EditorContent editor={editor} ref={editorRef} className="flex-1 overflow-y-auto" />
-      {/*<ContentItemMenu editor={editor} />*/}
-      {/*<LinkMenu editor={editor} appendTo={menuContainerRef} />*/}
-      {/*<TextMenu editor={editor} />*/}
-      {/*<ColumnsMenu editor={editor} appendTo={menuContainerRef} />*/}
-      {/*<TableRowMenu editor={editor} appendTo={menuContainerRef} />*/}
-      {/*<TableColumnMenu editor={editor} appendTo={menuContainerRef} />*/}
-      {/*<ImageBlockMenu editor={editor} appendTo={menuContainerRef} />*/}
-      {/*</div>*/}
-    </div>
+      <Box position="relative" display="flex" flexDirection="column" flex={1} overflow="hidden">
+        <EditorHeader
+          characters={characterCount.characters()}
+          words={characterCount.words()}
+          isSidebarOpen={leftSidebar.isOpen}
+          toggleSidebar={leftSidebar.toggle}
+        />
+        <EditorContent editor={editor} ref={editorRef} className="flex-1 overflow-y-auto" />
+        {/*<ContentItemMenu editor={editor} />*/}
+        {/*<LinkMenu editor={editor} appendTo={menuContainerRef} />*/}
+        {/*<TextMenu editor={editor} />*/}
+        {/*<ColumnsMenu editor={editor} appendTo={menuContainerRef} />*/}
+        {/*<TableRowMenu editor={editor} appendTo={menuContainerRef} />*/}
+        {/*<TableColumnMenu editor={editor} appendTo={menuContainerRef} />*/}
+        {/*<ImageBlockMenu editor={editor} appendTo={menuContainerRef} />*/}
+      </Box>
+    </Box>
     // </EditorContext.Provider>
   );
 };
