@@ -1,4 +1,4 @@
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 
 export type Card = {
   id: string;

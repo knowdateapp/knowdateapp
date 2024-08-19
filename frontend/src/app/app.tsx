@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { AuthContext } from 'entities/session';
 import 'shared/config/i18n';
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 import { Providers } from './providers';
 import { router } from './router.tsx';
 

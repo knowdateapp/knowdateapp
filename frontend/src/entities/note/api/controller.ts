@@ -1,5 +1,5 @@
 import { apiClient } from 'shared/api';
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 import { CreateNoteParams, Note } from '../types';
 
 const getUrl = (workspace: Workspace) => `${workspace}/notes`;

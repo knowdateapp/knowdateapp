@@ -1,4 +1,4 @@
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 
 const defaultKey = 'cards' as const;
 export const queriesKeys = {

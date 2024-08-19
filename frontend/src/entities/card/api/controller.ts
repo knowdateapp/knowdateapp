@@ -1,4 +1,4 @@
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 import { apiClient } from 'shared/api';
 import { Card, CreateCardParams } from '../types';
 

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Workspace } from 'shared/model';
+import { Workspace } from 'shared/types';
 
 export type AuthContextType = {
   isAuth: boolean;
